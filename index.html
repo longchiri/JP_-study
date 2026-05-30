@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0f1226">
+<title>후쿠오카 일본어 마스터</title>
+<style>
+  :root{
+    --bg:#0f1226; --bg2:#171b3d; --card:#1e2350; --card2:#272d63;
+    --accent:#ff5d73; --accent2:#ffb454; --good:#3ddc97; --blue:#5b8cff; --txt:#eef1ff;
+    --muted:#9aa3d4; --line:#343a78;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Kaku Gothic ProN","Apple SD Gothic Neo",sans-serif;
+    background:linear-gradient(160deg,var(--bg),var(--bg2)); background-attachment:fixed;
+    color:var(--txt); min-height:100vh; padding-bottom:92px;
+  }
+  header{text-align:center; padding:20px 16px 8px;}
+  header h1{font-size:21px; letter-spacing:.3px;}
+  header h1 span{color:var(--accent2);}
+  header p{color:var(--muted); font-size:12px; margin-top:4px;}
+  .wrap{max-width:780px; margin:0 auto; padding:0 13px;}
+
+  nav.tabs{
+    position:fixed; bottom:0; left:0; right:0; z-index:50; display:flex;
+    background:rgba(15,18,38,.96); backdrop-filter:blur(10px); border-top:1px solid var(--line);
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  nav.tabs button{
+    flex:1; background:none; border:none; color:var(--muted); padding:9px 1px 11px;
+    font-size:10.5px; cursor:pointer; transition:.2s; display:flex; flex-direction:column; align-items:center; gap:3px;
+  }
+  nav.tabs button .ic{font-size:19px;}
+  nav.tabs button.active{color:var(--accent);}
+
+  section{display:none; animation:fade .25s ease;}
+  section.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+  h2.sec{font-size:16px; margin:16px 4px 9px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+  h2.sec small{color:var(--muted); font-weight:400; font-size:12px;}
+
+  .toggle{display:flex; gap:8px; margin:6px 4px 12px;}
+  .toggle button{flex:1; padding:9px; border-radius:12px; border:1px solid var(--line); background:var(--card); color:var(--txt); font-size:14px; cursor:pointer; transition:.2s;}
+  .toggle button.on{background:var(--accent); border-color:var(--accent); font-weight:700;}
+  .gana-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:6px;}
+  .gana{background:var(--card); border:1px solid var(--line); border-radius:11px; padding:8px 3px 6px; text-align:center; cursor:pointer; transition:.15s;}
+  .gana:active{transform:scale(.93);}
+  .gana .ch{font-size:23px; line-height:1.1;}
+  .gana .ro{font-size:10.5px; color:var(--muted); margin-top:2px;}
+  .gana.empty{background:none; border:none; cursor:default;}
+  .gana.flash{background:var(--accent); border-color:var(--accent);}
+  .subhead{font-size:13px; color:var(--accent2); margin:18px 4px 8px; font-weight:600;}
+
+  .card{background:var(--card); border:1px solid var(--line); border-radius:15px; padding:12px 14px; margin-bottom:9px; cursor:pointer; transition:.15s; display:flex; align-items:center; gap:13px;}
+  .card:active{transform:scale(.985); background:var(--card2);}
+  .card .jp{flex:0 0 auto; min-width:78px;}
+  .card .jp .kanji{font-size:23px; font-weight:700; line-height:1.15;}
+  .card .jp .kana{font-size:12.5px; color:var(--accent2); margin-top:1px;}
+  .card .info{flex:1; min-width:0;}
+  .card .info .romaji{font-size:12.5px; color:var(--muted); font-style:italic;}
+  .card .info .ko{font-size:15px; margin-top:2px;}
+  .card .info .note{font-size:11.5px; color:var(--muted); margin-top:3px; line-height:1.4;}
+  .card .spk{flex:0 0 auto; width:38px; height:38px; border-radius:50%; border:1px solid var(--line); background:var(--bg2); color:var(--accent2); font-size:17px; display:grid; place-items:center;}
+
+  .cat-pill{display:inline-block; font-size:11px; padding:3px 10px; border-radius:20px; background:var(--bg2); color:var(--accent2); border:1px solid var(--line); margin:0 6px 8px 0; cursor:pointer;}
+  .cat-pill.on{background:var(--accent2); color:#222; font-weight:700;}
+
+  /* situations */
+  .scn{background:var(--card); border:1px solid var(--line); border-radius:16px; margin-bottom:12px; overflow:hidden;}
+  .scn-head{padding:13px 15px; cursor:pointer; display:flex; align-items:center; gap:10px; font-size:15px; font-weight:600;}
+  .scn-head .emo{font-size:20px;}
+  .scn-head .arr{margin-left:auto; color:var(--muted); transition:.25s; font-size:13px;}
+  .scn.open .scn-head .arr{transform:rotate(90deg);}
+  .scn-body{display:none; padding:0 13px 10px;}
+  .scn.open .scn-body{display:block;}
+  .line{display:flex; gap:9px; padding:9px 4px; border-top:1px solid var(--line); cursor:pointer;}
+  .line:active{opacity:.7;}
+  .line .who{flex:0 0 auto; width:46px; font-size:11px; font-weight:700; padding-top:3px;}
+  .line .who.me{color:var(--good);}
+  .line .who.st{color:var(--blue);}
+  .line .body{flex:1; min-width:0;}
+  .line .body .j{font-size:16px;}
+  .line .body .r{font-size:11.5px; color:var(--muted); font-style:italic; margin-top:2px;}
+  .line .body .k{font-size:13px; color:var(--accent2); margin-top:2px;}
+  .line .sp{flex:0 0 auto; color:var(--accent2); font-size:15px; padding-top:2px;}
+  .scn-tip{font-size:11.5px; color:var(--muted); padding:8px 4px 2px; border-top:1px dashed var(--line); line-height:1.5;}
+  .scn-tip b{color:var(--accent2);}
+
+  .tip{background:var(--card); border:1px dashed var(--line); border-radius:12px; padding:11px 14px; color:var(--muted); font-size:12.5px; line-height:1.6; margin-bottom:12px;}
+  .tip b{color:var(--accent2);}
+
+  /* numbers */
+  .num-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:8px;}
+  .num{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:10px 12px; cursor:pointer; display:flex; align-items:center; gap:10px;}
+  .num:active{background:var(--card2);}
+  .num .d{font-size:19px; font-weight:700; color:var(--accent2); flex:0 0 auto; width:30px;}
+  .num .x .j{font-size:15px;}
+  .num .x .r{font-size:11px; color:var(--muted); font-style:italic;}
+
+  /* quiz */
+  .quiz-box{background:var(--card); border:1px solid var(--line); border-radius:18px; padding:20px 15px; text-align:center;}
+  .quiz-q{font-size:50px; font-weight:700; margin:6px 0 4px;}
+  .quiz-sub{color:var(--muted); font-size:13px; margin-bottom:16px;}
+  .quiz-opts{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .quiz-opts button{padding:14px 8px; border-radius:13px; border:1px solid var(--line); background:var(--bg2); color:var(--txt); font-size:15px; cursor:pointer; transition:.12s;}
+  .quiz-opts button:active{transform:scale(.96);}
+  .quiz-opts button.correct{background:var(--good); border-color:var(--good); color:#08231a; font-weight:700;}
+  .quiz-opts button.wrong{background:var(--accent); border-color:var(--accent);}
+  .quiz-meta{display:flex; justify-content:space-between; font-size:13px; color:var(--muted); margin:0 4px 12px;}
+  .quiz-meta b{color:var(--accent2);}
+  .quiz-setup{display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;}
+  .quiz-setup button{flex:1; min-width:90px; padding:10px; border-radius:12px; border:1px solid var(--line); background:var(--card); color:var(--txt); font-size:13px; cursor:pointer;}
+  .quiz-setup button.on{background:var(--accent); border-color:var(--accent); font-weight:700;}
+  .next-btn{margin-top:15px; width:100%; padding:13px; border-radius:13px; border:none; background:var(--accent2); color:#222; font-size:15px; font-weight:700; cursor:pointer; display:none;}
+  .hint{color:var(--muted); font-size:12px; text-align:center; margin-top:10px; line-height:1.5;}
+  .soundbar{position:fixed; top:8px; right:10px; z-index:60; background:var(--card); border:1px solid var(--line); color:var(--accent2); font-size:11px; padding:5px 10px; border-radius:20px; cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="soundbar" id="soundbar" onclick="enableSound()">🔇 소리 켜기</div>
+<header>
+  <h1>🍜 후쿠오카 <span>일본어 마스터</span></h1>
+  <p>글자·문장을 탭하면 발음이 나와요</p>
+</header>
+
+<div class="wrap">
+
+  <!-- ===== 가나 ===== -->
+  <section id="kana" class="active">
+    <h2 class="sec">50음도 <small>가나 기초</small></h2>
+    <div class="toggle">
+      <button id="hbtn" class="on" onclick="setKana('hira')">ひらがな 히라가나</button>
+      <button id="kbtn" onclick="setKana('kata')">カタカナ 카타카나</button>
+    </div>
+    <div class="tip">💡 <b>히라가나</b>는 고유어·문법, <b>카타카나</b>는 외래어(コーヒー·ラーメン)에 써요. 글자 탭 = 발음.</div>
+    <div id="ganaGrid" class="gana-grid"></div>
+    <div class="subhead">탁음·반탁음 (が だ ば ぱ)</div>
+    <div id="dakuGrid" class="gana-grid"></div>
+  </section>
+
+  <!-- ===== 메뉴 ===== -->
+  <section id="menu">
+    <h2 class="sec">메뉴 단어 <small id="wcount"></small></h2>
+    <div id="catBar"></div>
+    <div id="wordList"></div>
+  </section>
+
+  <!-- ===== 상황 ===== -->
+  <section id="scene">
+    <h2 class="sec">상황별 회화 <small>구매·주문 통째로</small></h2>
+    <div class="tip"><b style="color:var(--good)">나</b> = 내가 하는 말 / <b style="color:var(--blue)">점원</b> = 듣게 될 말. 제목을 탭해 펼치고, 문장을 탭하면 읽어줘요.</div>
+    <div id="sceneList"></div>
+  </section>
+
+  <!-- ===== 숫자·표현 ===== -->
+  <section id="num">
+    <h2 class="sec">숫자 · 세는 법 <small>금액·개수</small></h2>
+    <div class="subhead">기본 숫자</div>
+    <div id="numGrid" class="num-grid"></div>
+    <div class="subhead">개수 세기 (1개·2개…)</div>
+    <div id="countGrid" class="num-grid"></div>
+    <div class="subhead">금액 (엔 / 円)</div>
+    <div id="yenGrid" class="num-grid"></div>
+    <div class="tip">💡 가격표의 <b>円</b>(えん, 엔)이 금액 단위예요. <b>税込</b>(ぜいこみ)=세금 포함, <b>税抜</b>(ぜいぬき)=세금 별도.</div>
+  </section>
+
+  <!-- ===== 퀴즈 ===== -->
+  <section id="quiz">
+    <h2 class="sec">퀴즈 <small>읽기 연습</small></h2>
+    <div class="quiz-setup">
+      <button id="qmK" class="on" onclick="setQuizMode('kana')">가나 읽기</button>
+      <button id="qmW" onclick="setQuizMode('word')">메뉴 뜻</button>
+      <button id="qmN" onclick="setQuizMode('num')">숫자</button>
+    </div>
+    <div class="quiz-meta"><span>점수 <b id="qScore">0</b></span><span>연속 <b id="qStreak">0</b> 🔥</span></div>
+    <div class="quiz-box">
+      <div class="quiz-q" id="qQ">―</div>
+      <div class="quiz-sub" id="qSub">알맞은 답을 고르세요</div>
+      <div class="quiz-opts" id="qOpts"></div>
+      <button class="next-btn" id="qNext" onclick="nextQuiz()">다음 →</button>
+    </div>
+    <p class="hint">정답을 맞히면 발음이 들려요</p>
+  </section>
+
+</div>
+
+<nav class="tabs">
+  <button class="active" onclick="tab('kana',this)"><span class="ic">あ</span>50음</button>
+  <button onclick="tab('menu',this)"><span class="ic">🍜</span>메뉴</button>
+  <button onclick="tab('scene',this)"><span class="ic">🛒</span>상황</button>
+  <button onclick="tab('num',this)"><span class="ic">🔢</span>숫자</button>
+  <button onclick="tab('quiz',this)"><span class="ic">🎯</span>퀴즈</button>
+</nav>
+
+<script>
+/* ============ TTS ============ */
+let jaVoice=null, soundOn=false;
+function loadVoices(){
+  const vs=speechSynthesis.getVoices();
+  jaVoice=vs.find(v=>v.lang==='ja-JP')||vs.find(v=>v.lang&&v.lang.startsWith('ja'))||null;
+}
+if('speechSynthesis' in window){ loadVoices(); speechSynthesis.onvoiceschanged=loadVoices; }
+function enableSound(){
+  soundOn=true;
+  document.getElementById('soundbar').textContent='🔊 소리 켜짐';
+  if('speechSynthesis' in window){ const u=new SpeechSynthesisUtterance(' '); u.volume=0; speechSynthesis.speak(u); }
+}
+function speak(text){
+  if(!('speechSynthesis' in window)||!text)return;
+  if(!soundOn)enableSound();
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='ja-JP'; u.rate=.82; if(jaVoice)u.voice=jaVoice;
+  speechSynthesis.speak(u);
+}
+
+/* ============ tabs ============ */
+function tab(id,btn){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+/* ============ 50음 ============ */
+const GANA=[
+  ['あ','ア','a'],['い','イ','i'],['う','ウ','u'],['え','エ','e'],['お','オ','o'],
+  ['か','カ','ka'],['き','キ','ki'],['く','ク','ku'],['け','ケ','ke'],['こ','コ','ko'],
+  ['さ','サ','sa'],['し','シ','shi'],['す','ス','su'],['せ','セ','se'],['そ','ソ','so'],
+  ['た','タ','ta'],['ち','チ','chi'],['つ','ツ','tsu'],['て','テ','te'],['と','ト','to'],
+  ['な','ナ','na'],['に','ニ','ni'],['ぬ','ヌ','nu'],['ね','ネ','ne'],['の','ノ','no'],
+  ['は','ハ','ha'],['ひ','ヒ','hi'],['ふ','フ','fu'],['へ','ヘ','he'],['ほ','ホ','ho'],
+  ['ま','マ','ma'],['み','ミ','mi'],['む','ム','mu'],['め','メ','me'],['も','モ','mo'],
+  ['や','ヤ','ya'],['','',''],['ゆ','ユ','yu'],['','',''],['よ','ヨ','yo'],
+  ['ら','ラ','ra'],['り','リ','ri'],['る','ル','ru'],['れ','レ','re'],['ろ','ロ','ro'],
+  ['わ','ワ','wa'],['','',''],['','',''],['','',''],['を','ヲ','wo'],
+  ['ん','ン','n'],['','',''],['','',''],['','',''],['','','']
+];
+const DAKU=[
+  ['が','ガ','ga'],['ぎ','ギ','gi'],['ぐ','グ','gu'],['げ','ゲ','ge'],['ご','ゴ','go'],
+  ['ざ','ザ','za'],['じ','ジ','ji'],['ず','ズ','zu'],['ぜ','ゼ','ze'],['ぞ','ゾ','zo'],
+  ['だ','ダ','da'],['ぢ','ヂ','ji'],['づ','ヅ','zu'],['で','デ','de'],['ど','ド','do'],
+  ['ば','バ','ba'],['び','ビ','bi'],['ぶ','ブ','bu'],['べ','ベ','be'],['ぼ','ボ','bo'],
+  ['ぱ','パ','pa'],['ぴ','ピ','pi'],['ぷ','プ','pu'],['ぺ','ペ','pe'],['ぽ','ポ','po']
+];
+let kanaMode='hira';
+function setKana(m){
+  kanaMode=m;
+  document.getElementById('hbtn').classList.toggle('on',m==='hira');
+  document.getElementById('kbtn').classList.toggle('on',m==='kata');
+  renderGana();
+}
+function fillGrid(el,data){
+  el.innerHTML='';
+  data.forEach(row=>{
+    const ch=kanaMode==='hira'?row[0]:row[1], ro=row[2];
+    if(!ch){const e=document.createElement('div');e.className='gana empty';el.appendChild(e);return;}
+    const d=document.createElement('div');
+    d.className='gana';
+    d.innerHTML=`<div class="ch">${ch}</div><div class="ro">${ro}</div>`;
+    d.onclick=()=>{speak(ch);d.classList.add('flash');setTimeout(()=>d.classList.remove('flash'),250);};
+    el.appendChild(d);
+  });
+}
+function renderGana(){ fillGrid(document.getElementById('ganaGrid'),GANA); fillGrid(document.getElementById('dakuGrid'),DAKU); }
+
+/* ============ 메뉴 단어 ============ */
+const WORDS=[
+  // ⭐ 후쿠오카 명물
+  {k:'豚骨ラーメン',ka:'とんこつラーメン',r:'tonkotsu rāmen',ko:'돈코츠 라멘',n:'돼지뼈 육수. 하카타 대표',c:'fukuoka'},
+  {k:'博多ラーメン',ka:'はかたラーメン',r:'hakata rāmen',ko:'하카타 라멘',n:'얇은 면+돈코츠. 면 추가=替え玉',c:'fukuoka'},
+  {k:'替え玉',ka:'かえだま',r:'kaedama',ko:'면 추가(사리)',n:'국물 남기고 면만 추가',c:'fukuoka'},
+  {k:'もつ鍋',ka:'もつなべ',r:'motsu nabe',ko:'모츠나베(곱창전골)',n:'후쿠오카 명물',c:'fukuoka'},
+  {k:'水炊き',ka:'みずたき',r:'mizutaki',ko:'미즈타키(닭전골)',n:'닭 백숙 스타일 나베',c:'fukuoka'},
+  {k:'明太子',ka:'めんたいこ',r:'mentaiko',ko:'명란젓',n:'후쿠오카 특산. 매운 명란',c:'fukuoka'},
+  {k:'屋台',ka:'やたい',r:'yatai',ko:'포장마차',n:'나카스·텐진 야외 포차',c:'fukuoka'},
+  {k:'胡麻鯖',ka:'ごまさば',r:'goma saba',ko:'고마사바',n:'참깨 양념 생고등어회',c:'fukuoka'},
+  {k:'鉄鍋餃子',ka:'てつなべぎょうざ',r:'tetsunabe gyōza',ko:'철판 교자',n:'작은 군만두. 후쿠오카 명물',c:'fukuoka'},
+  {k:'うどん',ka:'うどん',r:'udon',ko:'우동',n:'후쿠오카가 우동 발상지(부드러운 면)',c:'fukuoka'},
+  // 🍜 면류
+  {k:'ラーメン',ka:'ラーメン',r:'rāmen',ko:'라멘',n:'',c:'noodle'},
+  {k:'つけ麺',ka:'つけめん',r:'tsukemen',ko:'츠케멘',n:'면을 국물에 찍어 먹음',c:'noodle'},
+  {k:'蕎麦',ka:'そば',r:'soba',ko:'소바(메밀)',n:'',c:'noodle'},
+  {k:'焼きそば',ka:'やきそば',r:'yakisoba',ko:'야키소바(볶음면)',n:'',c:'noodle'},
+  {k:'冷やし中華',ka:'ひやしちゅうか',r:'hiyashi chūka',ko:'냉라멘',n:'여름 메뉴',c:'noodle'},
+  {k:'麺',ka:'めん',r:'men',ko:'면',n:'麺かため=면 단단하게',c:'noodle'},
+  // 🍖 고기·튀김
+  {k:'豚肉',ka:'ぶたにく',r:'butaniku',ko:'돼지고기',n:'豚=돼지',c:'meat'},
+  {k:'鶏肉',ka:'とりにく',r:'toriniku',ko:'닭고기',n:'鶏/鳥=닭',c:'meat'},
+  {k:'牛肉',ka:'ぎゅうにく',r:'gyūniku',ko:'소고기',n:'牛=소',c:'meat'},
+  {k:'豚カツ',ka:'とんカツ',r:'tonkatsu',ko:'돈카츠',n:'',c:'meat'},
+  {k:'唐揚げ',ka:'からあげ',r:'karaage',ko:'가라아게(닭튀김)',n:'',c:'meat'},
+  {k:'天ぷら',ka:'てんぷら',r:'tenpura',ko:'튀김',n:'',c:'meat'},
+  {k:'焼き鳥',ka:'やきとり',r:'yakitori',ko:'닭꼬치',n:'야타이 단골',c:'meat'},
+  {k:'餃子',ka:'ぎょうざ',r:'gyōza',ko:'교자(만두)',n:'구운 만두 기본',c:'meat'},
+  {k:'ハンバーグ',ka:'ハンバーグ',r:'hanbāgu',ko:'함박스테이크',n:'',c:'meat'},
+  {k:'焼肉',ka:'やきにく',r:'yakiniku',ko:'야키니쿠(고기구이)',n:'',c:'meat'},
+  // 🐟 해산물
+  {k:'寿司',ka:'すし',r:'sushi',ko:'초밥',n:'',c:'seafood'},
+  {k:'刺身',ka:'さしみ',r:'sashimi',ko:'회',n:'',c:'seafood'},
+  {k:'海老',ka:'えび',r:'ebi',ko:'새우',n:'エビ 표기도',c:'seafood'},
+  {k:'蟹',ka:'かに',r:'kani',ko:'게',n:'',c:'seafood'},
+  {k:'鰻',ka:'うなぎ',r:'unagi',ko:'장어',n:'',c:'seafood'},
+  {k:'鮪',ka:'まぐろ',r:'maguro',ko:'참치',n:'',c:'seafood'},
+  {k:'鮭',ka:'さけ',r:'sake',ko:'연어',n:'サーモン이라고도',c:'seafood'},
+  {k:'烏賊',ka:'いか',r:'ika',ko:'오징어',n:'イカ 표기도',c:'seafood'},
+  {k:'蛸',ka:'たこ',r:'tako',ko:'문어',n:'たこ焼き=타코야키',c:'seafood'},
+  {k:'貝',ka:'かい',r:'kai',ko:'조개',n:'',c:'seafood'},
+  // 🍚 밥·사이드
+  {k:'ご飯',ka:'ごはん',r:'gohan',ko:'밥',n:'ライス라고도',c:'side'},
+  {k:'丼',ka:'どんぶり',r:'donburi',ko:'덮밥',n:'牛丼=규동, 親子丼=오야코동',c:'side'},
+  {k:'カレー',ka:'カレー',r:'karē',ko:'카레',n:'',c:'side'},
+  {k:'味噌汁',ka:'みそしる',r:'miso shiru',ko:'된장국',n:'',c:'side'},
+  {k:'卵',ka:'たまご',r:'tamago',ko:'계란',n:'玉子 표기도',c:'side'},
+  {k:'野菜',ka:'やさい',r:'yasai',ko:'야채',n:'',c:'side'},
+  {k:'漬物',ka:'つけもの',r:'tsukemono',ko:'절임',n:'',c:'side'},
+  {k:'サラダ',ka:'サラダ',r:'sarada',ko:'샐러드',n:'',c:'side'},
+  {k:'おにぎり',ka:'おにぎり',r:'onigiri',ko:'주먹밥',n:'편의점 필수',c:'side'},
+  {k:'弁当',ka:'べんとう',r:'bentō',ko:'도시락',n:'',c:'side'},
+  // 🍺 음료
+  {k:'お茶',ka:'おちゃ',r:'ocha',ko:'(녹)차',n:'무료인 곳 많음',c:'drink'},
+  {k:'水',ka:'みず',r:'mizu',ko:'물',n:'お冷(おひや)라고도',c:'drink'},
+  {k:'生ビール',ka:'なまビール',r:'nama bīru',ko:'생맥주',n:'生=생',c:'drink'},
+  {k:'焼酎',ka:'しょうちゅう',r:'shōchū',ko:'소주(증류주)',n:'',c:'drink'},
+  {k:'日本酒',ka:'にほんしゅ',r:'nihonshu',ko:'사케',n:'',c:'drink'},
+  {k:'ハイボール',ka:'ハイボール',r:'haibōru',ko:'하이볼',n:'',c:'drink'},
+  {k:'珈琲',ka:'コーヒー',r:'kōhī',ko:'커피',n:'보통 コーヒー로 표기',c:'drink'},
+  {k:'ジュース',ka:'ジュース',r:'jūsu',ko:'주스',n:'',c:'drink'},
+  {k:'ソフトドリンク',ka:'ソフトドリンク',r:'sofuto dorinku',ko:'음료수(논알콜)',n:'',c:'drink'},
+  // 🌶️ 맛·조리·주문옵션
+  {k:'大盛り',ka:'おおもり',r:'ōmori',ko:'곱빼기',n:'양 많이. 보통=普通(ふつう)',c:'opt'},
+  {k:'並',ka:'なみ',r:'nami',ko:'보통(기본량)',n:'大=큰것, 小=작은것',c:'opt'},
+  {k:'辛い',ka:'からい',r:'karai',ko:'맵다',n:'激辛(げきから)=아주 매움',c:'opt'},
+  {k:'甘い',ka:'あまい',r:'amai',ko:'달다',n:'',c:'opt'},
+  {k:'定食',ka:'ていしょく',r:'teishoku',ko:'정식(세트)',n:'밥+국+반찬',c:'opt'},
+  {k:'セット',ka:'セット',r:'setto',ko:'세트',n:'',c:'opt'},
+  {k:'単品',ka:'たんぴん',r:'tanpin',ko:'단품',n:'세트 아닌 한 가지',c:'opt'},
+  {k:'おすすめ',ka:'おすすめ',r:'osusume',ko:'추천 메뉴',n:'本日のおすすめ=오늘의 추천',c:'opt'},
+  {k:'本日',ka:'ほんじつ',r:'honjitsu',ko:'오늘(의)',n:'',c:'opt'},
+  {k:'お持ち帰り',ka:'おもちかえり',r:'omochikaeri',ko:'포장(테이크아웃)',n:'テイクアウト라고도',c:'opt'},
+  {k:'店内',ka:'てんない',r:'tennai',ko:'매장 내 식사',n:'店内でお召し上がり=매장에서',c:'opt'},
+  {k:'税込',ka:'ぜいこみ',r:'zeikomi',ko:'세금 포함',n:'가격표 표기',c:'opt'},
+  {k:'税抜',ka:'ぜいぬき',r:'ぜいぬき',ko:'세금 별도',n:'표시가에 세금 추가',c:'opt'},
+  {k:'無料',ka:'むりょう',r:'muryō',ko:'무료',n:'',c:'opt'},
+  {k:'食べ放題',ka:'たべほうだい',r:'tabehōdai',ko:'무한리필(뷔페)',n:'飲み放題=음료 무제한',c:'opt'}
+];
+const CATS=[
+  ['all','전체'],['fukuoka','⭐후쿠오카'],['noodle','🍜면'],['meat','🍖고기·튀김'],
+  ['seafood','🐟해산물'],['side','🍚밥·사이드'],['drink','🍺음료'],['opt','🌶️옵션·표시']
+];
+let curCat='all';
+function renderCats(){
+  const b=document.getElementById('catBar'); b.innerHTML='';
+  CATS.forEach(([id,lbl])=>{
+    const s=document.createElement('span');
+    s.className='cat-pill'+(curCat===id?' on':'');
+    s.textContent=lbl;
+    s.onclick=()=>{curCat=id;renderCats();renderWords();};
+    b.appendChild(s);
+  });
+}
+function renderWords(){
+  const l=document.getElementById('wordList'); l.innerHTML='';
+  const list=WORDS.filter(w=>curCat==='all'||w.c===curCat);
+  document.getElementById('wcount').textContent=list.length+'개';
+  list.forEach(w=>{
+    const c=document.createElement('div'); c.className='card';
+    c.innerHTML=`<div class="jp"><div class="kanji">${w.k}</div><div class="kana">${w.ka}</div></div>
+      <div class="info"><div class="romaji">${w.r}</div><div class="ko">${w.ko}</div>${w.n?`<div class="note">${w.n}</div>`:''}</div>
+      <div class="spk">🔊</div>`;
+    c.onclick=()=>speak(w.ka);
+    l.appendChild(c);
+  });
+}
+
+/* ============ 상황별 회화 ============ */
+/* w: 'me'(나) | 'st'(점원) */
+const SCENES=[
+  {emo:'🚪',title:'1. 입장 · 자리 안내',tip:'人(にん/めい)=명수. 손가락으로 인원 표시해도 OK.',lines:[
+    {w:'st',j:'いらっしゃいませ',r:'irasshaimase',k:'어서 오세요'},
+    {w:'st',j:'何名様ですか？',r:'nan mei sama desu ka?',k:'몇 분이세요?'},
+    {w:'me',j:'二人です',r:'futari desu',k:'두 명이요'},
+    {w:'me',j:'一人です',r:'hitori desu',k:'한 명이요'},
+    {w:'st',j:'喫煙席と禁煙席、どちらにしますか？',r:'kitsuen / kin\'en seki, dochira?',k:'흡연/금연석 어디로?'},
+    {w:'me',j:'禁煙席をお願いします',r:'kin\'en seki o onegai shimasu',k:'금연석 부탁해요'},
+    {w:'me',j:'待ち時間はどのくらいですか？',r:'machi jikan wa dono kurai?',k:'대기 시간 얼마나 돼요?'}
+  ]},
+  {emo:'🎫',title:'2. 식권 발매기 (券売機)',tip:'라멘·규동·정식집에 많은 자판기. 돈 넣고 → 메뉴 버튼 → 식권을 점원에게.',lines:[
+    {w:'st',j:'先に券売機で食券をお買い求めください',r:'kenbaiki de shokken o…',k:'먼저 발매기에서 식권 사세요'},
+    {w:'me',j:'使い方を教えてください',r:'tsukaikata o oshiete kudasai',k:'사용법 알려주세요'},
+    {w:'me',j:'お札は使えますか？',r:'osatsu wa tsukaemasu ka?',k:'지폐 써도 되나요?'},
+    {w:'me',j:'おつりはどこですか？',r:'otsuri wa doko desu ka?',k:'거스름돈 어디서 나와요?'},
+    {w:'me',j:'この食券をお願いします',r:'kono shokken o onegai shimasu',k:'이 식권 부탁해요'}
+  ]},
+  {emo:'📖',title:'3. 메뉴 보기 · 주문',tip:'これ(이거)+ください면 거의 다 통해요. 가리키면서!',lines:[
+    {w:'me',j:'メニューをください',r:'menyū o kudasai',k:'메뉴판 주세요'},
+    {w:'me',j:'すみません、注文いいですか？',r:'sumimasen, chūmon ii desu ka?',k:'저기요, 주문할게요'},
+    {w:'me',j:'おすすめは何ですか？',r:'osusume wa nan desu ka?',k:'추천 메뉴가 뭐예요?'},
+    {w:'me',j:'これをください',r:'kore o kudasai',k:'이거 주세요'},
+    {w:'me',j:'これと、これをお願いします',r:'kore to kore o onegai shimasu',k:'이거랑 이거 주세요'},
+    {w:'me',j:'同じものをください',r:'onaji mono o kudasai',k:'같은 걸로 주세요'},
+    {w:'st',j:'お飲み物はいかがですか？',r:'onomimono wa ikaga?',k:'음료는 어떠세요?'},
+    {w:'me',j:'これは何ですか？',r:'kore wa nan desu ka?',k:'이건 뭐예요?'}
+  ]},
+  {emo:'🍜',title:'4. 라멘집 옵션 (면·국물)',tip:'하카타 라멘은 면 굳기를 물어봐요. かため(단단)·ふつう(보통)·やわ(부드)',lines:[
+    {w:'st',j:'麺の硬さはどうしますか？',r:'men no katasa wa?',k:'면 굳기 어떻게 할까요?'},
+    {w:'me',j:'かためでお願いします',r:'katame de onegai shimasu',k:'단단하게요'},
+    {w:'me',j:'普通でお願いします',r:'futsū de onegai shimasu',k:'보통으로요'},
+    {w:'me',j:'替え玉ください',r:'kaedama kudasai',k:'면 추가요'},
+    {w:'me',j:'味は濃いめにしてください',r:'aji wa koime ni shite kudasai',k:'간 진하게 해주세요'},
+    {w:'me',j:'ネギ多めでお願いします',r:'negi ōme de onegai shimasu',k:'파 많이 주세요'}
+  ]},
+  {emo:'🙋',title:'5. 추가 주문 · 요청',tip:'おかわり=리필. お願いします 붙이면 정중.',lines:[
+    {w:'me',j:'お水ください',r:'omizu kudasai',k:'물 주세요'},
+    {w:'me',j:'取り皿をください',r:'torizara o kudasai',k:'앞접시 주세요'},
+    {w:'me',j:'おしぼりをください',r:'oshibori o kudasai',k:'물수건 주세요'},
+    {w:'me',j:'ご飯のおかわりお願いします',r:'gohan no okawari…',k:'밥 리필해주세요'},
+    {w:'me',j:'辛くしないでください',r:'karaku shinaide kudasai',k:'맵지 않게요'},
+    {w:'me',j:'まだ来ていません',r:'mada kite imasen',k:'(주문한 게) 아직 안 나왔어요'}
+  ]},
+  {emo:'💳',title:'6. 계산 · 결제',tip:'別々(べつべつ)=따로, 一緒(いっしょ)=같이. 카운터 계산이 많아요.',lines:[
+    {w:'me',j:'お会計お願いします',r:'okaikei onegai shimasu',k:'계산해 주세요'},
+    {w:'me',j:'いくらですか？',r:'ikura desu ka?',k:'얼마예요?'},
+    {w:'me',j:'カードで払えますか？',r:'kādo de haraemasu ka?',k:'카드 되나요?'},
+    {w:'me',j:'PayPay使えますか？',r:'PayPay tsukaemasu ka?',k:'페이페이(QR) 되나요?'},
+    {w:'me',j:'別々でお願いします',r:'betsubetsu de onegai shimasu',k:'따로 계산해 주세요'},
+    {w:'me',j:'一緒でお願いします',r:'issho de onegai shimasu',k:'같이 계산해 주세요'},
+    {w:'me',j:'領収書をください',r:'ryōshūsho o kudasai',k:'영수증 주세요'},
+    {w:'st',j:'こちらでお会計です',r:'kochira de okaikei',k:'여기서 계산이세요'}
+  ]},
+  {emo:'🏪',title:'7. 편의점 (コンビニ)',tip:'온도(데우기)·봉투·결제만 알면 끝. 袋(ふくろ)=봉투.',lines:[
+    {w:'st',j:'温めますか？',r:'atatamemasu ka?',k:'데워드릴까요?'},
+    {w:'me',j:'はい、お願いします',r:'hai, onegai shimasu',k:'네, 데워주세요'},
+    {w:'me',j:'いいえ、大丈夫です',r:'iie, daijōbu desu',k:'아니요, 괜찮아요'},
+    {w:'st',j:'袋はご利用ですか？',r:'fukuro wa goriyō desu ka?',k:'봉투 필요하세요?'},
+    {w:'me',j:'袋ください',r:'fukuro kudasai',k:'봉투 주세요'},
+    {w:'st',j:'お箸はおつけしますか？',r:'ohashi wa otsuke shimasu ka?',k:'젓가락 넣어드릴까요?'},
+    {w:'me',j:'お箸をください',r:'ohashi o kudasai',k:'젓가락 주세요'},
+    {w:'st',j:'ポイントカードはお持ちですか？',r:'pointo kādo wa…?',k:'포인트카드 있으세요?'},
+    {w:'me',j:'ないです',r:'nai desu',k:'없어요'}
+  ]},
+  {emo:'☕',title:'8. 카페',tip:'사이즈+온도+드시고/포장. ホット=뜨거운, アイス=차가운.',lines:[
+    {w:'st',j:'店内でお召し上がりですか？',r:'tennai de omeshiagari?',k:'매장에서 드세요?'},
+    {w:'me',j:'持ち帰りです',r:'mochikaeri desu',k:'포장이요'},
+    {w:'me',j:'店内で',r:'tennai de',k:'매장에서요'},
+    {w:'me',j:'アイスコーヒーのMサイズください',r:'aisu kōhī no M saizu…',k:'아이스커피 M 사이즈요'},
+    {w:'me',j:'ホットでお願いします',r:'hotto de onegai shimasu',k:'따뜻한 걸로요'},
+    {w:'me',j:'砂糖はいりません',r:'satō wa irimasen',k:'설탕 안 넣어도 돼요'}
+  ]},
+  {emo:'🏮',title:'9. 야타이 · 이자카야',tip:'お通し(おとおし)=기본 안주(유료). 건배=乾杯(かんぱい)!',lines:[
+    {w:'me',j:'一人ですが、入れますか？',r:'hitori desu ga, hairemasu ka?',k:'혼자인데 들어갈 수 있어요?'},
+    {w:'me',j:'とりあえず生で',r:'toriaezu nama de',k:'일단 생맥주로 (정형구)'},
+    {w:'st',j:'お通しです',r:'otōshi desu',k:'기본 안주입니다'},
+    {w:'me',j:'これ、二つください',r:'kore, futatsu kudasai',k:'이거 두 개요'},
+    {w:'me',j:'乾杯！',r:'kanpai!',k:'건배!'},
+    {w:'me',j:'おすすめのお酒は？',r:'osusume no osake wa?',k:'추천 술은요?'}
+  ]},
+  {emo:'🍣',title:'10. 회전초밥',tip:'터치패널 주문이 많음. 皿(さら)=접시(가격 색깔별).',lines:[
+    {w:'me',j:'タッチパネルで注文できますか？',r:'tacchi paneru de chūmon…?',k:'터치패널로 주문돼요?'},
+    {w:'me',j:'サビ抜きでお願いします',r:'sabi nuki de onegai shimasu',k:'와사비 빼주세요'},
+    {w:'me',j:'お茶はどこですか？',r:'ocha wa doko desu ka?',k:'차는 어디 있어요?'},
+    {w:'me',j:'お会計お願いします',r:'okaikei onegai shimasu',k:'계산해 주세요'},
+    {w:'st',j:'お皿を数えます',r:'osara o kazoemasu',k:'접시 세겠습니다'}
+  ]},
+  {emo:'🛍️',title:'11. 쇼핑 · 면세 (드럭스토어)',tip:'免税(めんぜい)=Tax Free. 여권 지참! 5,000엔↑ 면세 가능.',lines:[
+    {w:'me',j:'これください',r:'kore kudasai',k:'이거 주세요'},
+    {w:'me',j:'免税できますか？',r:'menzei dekimasu ka?',k:'면세 되나요?'},
+    {w:'me',j:'パスポートはこれです',r:'pasupōto wa kore desu',k:'여권 여기 있어요'},
+    {w:'st',j:'パスポートをお願いします',r:'pasupōto o onegai shimasu',k:'여권 주세요'},
+    {w:'me',j:'試着してもいいですか？',r:'shichaku shite mo ii?',k:'입어봐도 돼요?'},
+    {w:'me',j:'もっと安いのはありますか？',r:'motto yasui no wa…?',k:'더 싼 거 있어요?'},
+    {w:'me',j:'これだけです',r:'kore dake desu',k:'이게 다예요'}
+  ]},
+  {emo:'⚠️',title:'12. 문제 상황 · 알레르기',tip:'못 먹는 음식·잘못 나온 음식 대처. 무리하지 말고 또박또박!',lines:[
+    {w:'me',j:'アレルギーがあります',r:'arerugī ga arimasu',k:'알레르기가 있어요'},
+    {w:'me',j:'卵が食べられません',r:'tamago ga taberaremasen',k:'계란을 못 먹어요'},
+    {w:'me',j:'これは注文していません',r:'kore wa chūmon shite imasen',k:'이거 주문 안 했어요'},
+    {w:'me',j:'注文を間違えました',r:'chūmon o machigaemashita',k:'주문을 잘못했어요'},
+    {w:'me',j:'トイレはどこですか？',r:'toire wa doko desu ka?',k:'화장실 어디예요?'},
+    {w:'me',j:'英語のメニューはありますか？',r:'eigo no menyū wa…?',k:'영어 메뉴 있어요?'},
+    {w:'me',j:'写真を撮ってもいいですか？',r:'shashin o totte mo ii?',k:'사진 찍어도 돼요?'},
+    {w:'me',j:'ゆっくり話してください',r:'yukkuri hanashite kudasai',k:'천천히 말해주세요'}
+  ]},
+  {emo:'🙏',title:'13. 기본 인사·매너',tip:'식사 전후 인사. 외국인이 쓰면 점원이 정말 좋아해요.',lines:[
+    {w:'me',j:'すみません',r:'sumimasen',k:'저기요 / 실례합니다'},
+    {w:'me',j:'ありがとうございます',r:'arigatō gozaimasu',k:'감사합니다'},
+    {w:'me',j:'いただきます',r:'itadakimasu',k:'잘 먹겠습니다 (먹기 전)'},
+    {w:'me',j:'ごちそうさまでした',r:'gochisōsama deshita',k:'잘 먹었습니다 (나갈 때)'},
+    {w:'me',j:'とても美味しいです',r:'totemo oishii desu',k:'정말 맛있어요'},
+    {w:'me',j:'大丈夫です',r:'daijōbu desu',k:'괜찮아요 (사양/긍정 둘 다)'}
+  ]}
+];
+function renderScenes(){
+  const l=document.getElementById('sceneList'); l.innerHTML='';
+  SCENES.forEach(s=>{
+    const d=document.createElement('div'); d.className='scn';
+    let inner=`<div class="scn-head"><span class="emo">${s.emo}</span><span>${s.title}</span><span class="arr">▶</span></div><div class="scn-body">`;
+    s.lines.forEach(ln=>{
+      const who=ln.w==='me'?'<span class="who me">나</span>':'<span class="who st">점원</span>';
+      inner+=`<div class="line" data-j="${ln.j}">${who}<div class="body"><div class="j">${ln.j}</div><div class="r">${ln.r}</div><div class="k">${ln.k}</div></div><span class="sp">🔊</span></div>`;
+    });
+    inner+=`<div class="scn-tip">💡 ${s.tip}</div></div>`;
+    d.innerHTML=inner;
+    d.querySelector('.scn-head').onclick=()=>d.classList.toggle('open');
+    d.querySelectorAll('.line').forEach(li=>li.onclick=()=>speak(li.getAttribute('data-j')));
+    l.appendChild(d);
+  });
+}
+
+/* ============ 숫자 ============ */
+const NUMS=[
+  ['1','一','いち','ichi'],['2','二','に','ni'],['3','三','さん','san'],['4','四','よん/し','yon/shi'],
+  ['5','五','ご','go'],['6','六','ろく','roku'],['7','七','なな/しち','nana'],['8','八','はち','hachi'],
+  ['9','九','きゅう','kyū'],['10','十','じゅう','jū'],['100','百','ひゃく','hyaku'],['1000','千','せん','sen']
+];
+const COUNT=[
+  ['1개','一つ','ひとつ','hitotsu'],['2개','二つ','ふたつ','futatsu'],['3개','三つ','みっつ','mittsu'],
+  ['4개','四つ','よっつ','yottsu'],['5개','五つ','いつつ','itsutsu'],['1명','一人','ひとり','hitori'],
+  ['2명','二人','ふたり','futari'],['3명','三人','さんにん','san nin']
+];
+const YEN=[
+  ['100円','ひゃくえん','hyaku en','100엔'],['500円','ごひゃくえん','gohyaku en','500엔'],
+  ['1000円','せんえん','sen en','1000엔'],['3000円','さんぜんえん','sanzen en','3000엔'],
+  ['5000円','ごせんえん','gosen en','5000엔'],['10000円','いちまんえん','ichiman en','1만엔']
+];
+function renderNums(){
+  const g=document.getElementById('numGrid'); g.innerHTML='';
+  NUMS.forEach(([d,k,ka,r])=>{
+    const e=document.createElement('div'); e.className='num';
+    e.innerHTML=`<div class="d">${d}</div><div class="x"><div class="j">${k} <span style="color:var(--accent2)">${ka}</span></div><div class="r">${r}</div></div>`;
+    e.onclick=()=>speak(ka); g.appendChild(e);
+  });
+  const c=document.getElementById('countGrid'); c.innerHTML='';
+  COUNT.forEach(([d,k,ka,r])=>{
+    const e=document.createElement('div'); e.className='num';
+    e.innerHTML=`<div class="d" style="font-size:14px">${d}</div><div class="x"><div class="j">${k} <span style="color:var(--accent2)">${ka}</span></div><div class="r">${r}</div></div>`;
+    e.onclick=()=>speak(ka); c.appendChild(e);
+  });
+  const y=document.getElementById('yenGrid'); y.innerHTML='';
+  YEN.forEach(([k,ka,r,ko])=>{
+    const e=document.createElement('div'); e.className='num';
+    e.innerHTML=`<div class="x" style="flex:1"><div class="j">${k} <span style="color:var(--muted);font-size:12px">${ko}</span></div><div class="r">${ka} · ${r}</div></div>`;
+    e.onclick=()=>speak(ka); y.appendChild(e);
+  });
+}
+
+/* ============ 퀴즈 ============ */
+let quizMode='kana', qScore=0, qStreak=0, qAnswered=false, qCorrect='';
+function setQuizMode(m){
+  quizMode=m;
+  document.getElementById('qmK').classList.toggle('on',m==='kana');
+  document.getElementById('qmW').classList.toggle('on',m==='word');
+  document.getElementById('qmN').classList.toggle('on',m==='num');
+  qScore=0;qStreak=0;updateScore();nextQuiz();
+}
+function updateScore(){ document.getElementById('qScore').textContent=qScore; document.getElementById('qStreak').textContent=qStreak; }
+function pick(arr,n,exclude){
+  const pool=arr.filter(x=>x!==exclude); const out=[];
+  while(out.length<n&&pool.length) out.push(pool.splice(Math.floor(Math.random()*pool.length),1)[0]);
+  return out;
+}
+function nextQuiz(){
+  qAnswered=false;
+  document.getElementById('qNext').style.display='none';
+  document.getElementById('qOpts').innerHTML='';
+  const Q=document.getElementById('qQ');
+  if(quizMode==='kana'){
+    const all=GANA.concat(DAKU).filter(g=>g[0]);
+    const item=all[Math.floor(Math.random()*all.length)];
+    const useHira=Math.random()<.5;
+    const shown=useHira?item[0]:item[1];
+    qCorrect=item[2]; Q.textContent=shown; Q.style.fontSize='50px';
+    document.getElementById('qSub').textContent=(useHira?'히라가나':'카타카나')+' — 발음은?';
+    buildOpts([item[2],...pick(all.map(g=>g[2]),3,item[2])],()=>speak(shown));
+  }else if(quizMode==='word'){
+    const item=WORDS[Math.floor(Math.random()*WORDS.length)];
+    qCorrect=item.ko; Q.textContent=item.k; Q.style.fontSize=item.k.length>4?'30px':'42px';
+    document.getElementById('qSub').textContent=item.ka+' — 뜻은?';
+    buildOpts([item.ko,...pick(WORDS.map(w=>w.ko),3,item.ko)],()=>speak(item.ka));
+  }else{
+    const pool=NUMS.concat(COUNT);
+    const item=pool[Math.floor(Math.random()*pool.length)];
+    qCorrect=item[0]; Q.textContent=item[1]; Q.style.fontSize='46px';
+    document.getElementById('qSub').textContent=item[2]+' — 숫자/개수는?';
+    buildOpts([item[0],...pick(pool.map(p=>p[0]),3,item[0])],()=>speak(item[2]));
+  }
+}
+function buildOpts(arr,speakFn){
+  arr.sort(()=>Math.random()-.5);
+  const opts=document.getElementById('qOpts');
+  arr.forEach(a=>{
+    const b=document.createElement('button'); b.textContent=a;
+    b.onclick=()=>answer(b,a,speakFn); opts.appendChild(b);
+  });
+}
+function answer(btn,val,speakFn){
+  if(qAnswered)return; qAnswered=true;
+  if(val===qCorrect){ btn.classList.add('correct'); qScore+=10; qStreak++; speakFn(); }
+  else{ btn.classList.add('wrong'); qStreak=0;
+    document.querySelectorAll('#qOpts button').forEach(b=>{if(b.textContent===qCorrect)b.classList.add('correct');});
+  }
+  updateScore();
+  document.getElementById('qNext').style.display='block';
+}
+
+/* ============ init ============ */
+renderGana(); renderCats(); renderWords(); renderScenes(); renderNums(); nextQuiz();
+</script>
+</body>
+</html>
