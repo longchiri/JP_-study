@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#0f1226">
-<title>후쿠오카 일본어 마스터</title>
+<title>일본 여행 일본어 마스터</title>
 <style>
   :root{
     --bg:#0f1226; --bg2:#171b3d; --card:#1e2350; --card2:#272d63;
@@ -54,9 +54,10 @@
   .gana.flash{background:var(--accent); border-color:var(--accent);}
   .subhead{font-size:13px; color:var(--accent2); margin:18px 4px 8px; font-weight:600;}
 
-  .card{background:var(--card); border:1px solid var(--line); border-radius:15px; padding:12px 14px; margin-bottom:9px; cursor:pointer; transition:.15s; display:flex; align-items:center; gap:13px;}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:15px; padding:11px 13px; margin-bottom:9px; cursor:pointer; transition:.15s; display:flex; align-items:center; gap:11px;}
   .card:active{transform:scale(.985); background:var(--card2);}
-  .card .jp{flex:0 0 auto; min-width:78px;}
+  .card .thumb{flex:0 0 auto; width:52px; height:52px; border-radius:12px; background:linear-gradient(145deg,var(--bg2),var(--card2)); border:1px solid var(--line); display:grid; place-items:center; font-size:30px; line-height:1;}
+  .card .jp{flex:0 0 auto; min-width:74px;}
   .card .jp .kanji{font-size:23px; font-weight:700; line-height:1.15;}
   .card .jp .kana{font-size:12.5px; color:var(--accent2); margin-top:1px;}
   .card .info{flex:1; min-width:0;}
@@ -122,8 +123,8 @@
 <body>
 <div class="soundbar" id="soundbar" onclick="enableSound()">🔇 소리 켜기</div>
 <header>
-  <h1>🍜 후쿠오카 <span>일본어 마스터</span></h1>
-  <p>글자·문장을 탭하면 발음이 나와요</p>
+  <h1>🇯🇵 일본 여행 <span>일본어 마스터</span></h1>
+  <p>일본 전역용 · ⭐후쿠오카 명물 포함 · 글자·문장 탭하면 발음</p>
 </header>
 
 <div class="wrap">
@@ -151,7 +152,8 @@
   <!-- ===== 상황 ===== -->
   <section id="scene">
     <h2 class="sec">상황별 회화 <small>구매·주문 통째로</small></h2>
-    <div class="tip"><b style="color:var(--good)">나</b> = 내가 하는 말 / <b style="color:var(--blue)">점원</b> = 듣게 될 말. 제목을 탭해 펼치고, 문장을 탭하면 읽어줘요.</div>
+    <div class="tip"><b style="color:var(--good)">나</b> = 내가 하는 말 / <b style="color:var(--blue)">점원·상대</b> = 듣게 될 말. 제목을 탭해 펼치고, 문장을 탭하면 읽어줘요.</div>
+    <div id="sceneCatBar"></div>
     <div id="sceneList"></div>
   </section>
 
@@ -346,12 +348,99 @@ const WORDS=[
   {k:'税込',ka:'ぜいこみ',r:'zeikomi',ko:'세금 포함',n:'가격표 표기',c:'opt'},
   {k:'税抜',ka:'ぜいぬき',r:'ぜいぬき',ko:'세금 별도',n:'표시가에 세금 추가',c:'opt'},
   {k:'無料',ka:'むりょう',r:'muryō',ko:'무료',n:'',c:'opt'},
-  {k:'食べ放題',ka:'たべほうだい',r:'tabehōdai',ko:'무한리필(뷔페)',n:'飲み放題=음료 무제한',c:'opt'}
+  {k:'食べ放題',ka:'たべほうだい',r:'tabehōdai',ko:'무한리필(뷔페)',n:'飲み放題=음료 무제한',c:'opt'},
+  // ===== 🗾 전국 명물 (지역) =====
+  {k:'お好み焼き',ka:'おこのみやき',r:'okonomiyaki',ko:'오코노미야키',n:'오사카·히로시마 명물',c:'region',e:'🥘'},
+  {k:'たこ焼き',ka:'たこやき',r:'takoyaki',ko:'타코야키',n:'오사카 명물(문어볼)',c:'region',e:'🐙'},
+  {k:'味噌ラーメン',ka:'みそラーメン',r:'miso rāmen',ko:'미소(된장) 라멘',n:'삿포로(홋카이도) 명물',c:'region',e:'🍜'},
+  {k:'醤油ラーメン',ka:'しょうゆラーメン',r:'shōyu rāmen',ko:'쇼유(간장) 라멘',n:'도쿄 등 정통',c:'region',e:'🍜'},
+  {k:'塩ラーメン',ka:'しおラーメン',r:'shio rāmen',ko:'시오(소금) 라멘',n:'담백한 맑은 국물',c:'region',e:'🍜'},
+  {k:'ちゃんぽん',ka:'ちゃんぽん',r:'chanpon',ko:'짬뽕',n:'나가사키·규슈 명물',c:'region',e:'🍜'},
+  {k:'味噌カツ',ka:'みそカツ',r:'miso katsu',ko:'미소카츠',n:'나고야 명물(된장 돈카츠)',c:'region',e:'🍖'},
+  {k:'手羽先',ka:'てばさき',r:'tebasaki',ko:'데바사키(닭날개)',n:'나고야 명물',c:'region',e:'🍗'},
+  {k:'ひつまぶし',ka:'ひつまぶし',r:'hitsumabushi',ko:'히츠마부시',n:'나고야 장어덮밥',c:'region',e:'🍱'},
+  {k:'牛タン',ka:'ぎゅうタン',r:'gyūtan',ko:'규탕(소혀구이)',n:'센다이 명물',c:'region',e:'🥩'},
+  {k:'沖縄そば',ka:'おきなわそば',r:'okinawa soba',ko:'오키나와 소바',n:'오키나와 명물',c:'region',e:'🍜'},
+  {k:'讃岐うどん',ka:'さぬきうどん',r:'sanuki udon',ko:'사누키 우동',n:'카가와(시코쿠) 명물',c:'region',e:'🍜'},
+  {k:'もんじゃ焼き',ka:'もんじゃやき',r:'monja yaki',ko:'몬자야키',n:'도쿄 명물',c:'region',e:'🥘'},
+  {k:'すき焼き',ka:'すきやき',r:'sukiyaki',ko:'스키야키',n:'간장·설탕 소고기전골',c:'region',e:'🍲'},
+  {k:'しゃぶしゃぶ',ka:'しゃぶしゃぶ',r:'shabu shabu',ko:'샤브샤브',n:'',c:'region',e:'🍲'},
+  // ===== 🍱 덮밥·밥류 =====
+  {k:'牛丼',ka:'ぎゅうどん',r:'gyūdon',ko:'규동(소고기덮밥)',n:'',c:'don',e:'🍚'},
+  {k:'カツ丼',ka:'カツどん',r:'katsudon',ko:'가츠동(돈카츠덮밥)',n:'',c:'don',e:'🍱'},
+  {k:'親子丼',ka:'おやこどん',r:'oyakodon',ko:'오야코동(닭+계란)',n:'',c:'don',e:'🍱'},
+  {k:'天丼',ka:'てんどん',r:'tendon',ko:'텐동(튀김덮밥)',n:'',c:'don',e:'🍤'},
+  {k:'海鮮丼',ka:'かいせんどん',r:'kaisendon',ko:'해산물덮밥',n:'',c:'don',e:'🐟'},
+  {k:'うな丼',ka:'うなどん',r:'unadon',ko:'장어덮밥',n:'うな重=중간 등급',c:'don',e:'🍱'},
+  {k:'鉄火丼',ka:'てっかどん',r:'tekkadon',ko:'참치회덮밥',n:'',c:'don',e:'🍣'},
+  {k:'オムライス',ka:'オムライス',r:'omuraisu',ko:'오므라이스',n:'',c:'don',e:'🍳'},
+  {k:'チャーハン',ka:'チャーハン',r:'chāhan',ko:'볶음밥',n:'',c:'don',e:'🍚'},
+  {k:'カレーライス',ka:'カレーライス',r:'karē raisu',ko:'카레라이스',n:'',c:'don',e:'🍛'},
+  // ===== 🍢 이자카야 안주 =====
+  {k:'枝豆',ka:'えだまめ',r:'edamame',ko:'풋콩',n:'기본 안주',c:'izakaya',e:'🫛'},
+  {k:'出汁巻き卵',ka:'だしまきたまご',r:'dashimaki tamago',ko:'계란말이',n:'',c:'izakaya',e:'🍳'},
+  {k:'揚げ出し豆腐',ka:'あげだしどうふ',r:'agedashi dōfu',ko:'아게다시도후(튀긴두부)',n:'',c:'izakaya',e:'🍢'},
+  {k:'冷奴',ka:'ひややっこ',r:'hiyayakko',ko:'냉두부',n:'차가운 두부',c:'izakaya',e:'🧊'},
+  {k:'串カツ',ka:'くしカツ',r:'kushikatsu',ko:'쿠시카츠(꼬치튀김)',n:'소스 두 번 찍기 금지!',c:'izakaya',e:'🍢'},
+  {k:'もつ煮',ka:'もつに',r:'motsuni',ko:'곱창조림',n:'',c:'izakaya',e:'🍲'},
+  {k:'刺身盛り合わせ',ka:'さしみもりあわせ',r:'sashimi moriawase',ko:'모듬회',n:'',c:'izakaya',e:'🐟'},
+  {k:'焼き魚',ka:'やきざかな',r:'yakizakana',ko:'생선구이',n:'',c:'izakaya',e:'🐟'},
+  {k:'ポテトフライ',ka:'ポテトフライ',r:'poteto furai',ko:'감자튀김',n:'',c:'izakaya',e:'🍟'},
+  {k:'砂肝',ka:'すなぎも',r:'sunagimo',ko:'닭모래집',n:'꼬치 단골',c:'izakaya',e:'🍢'},
+  // ===== 🍡 디저트·간식 =====
+  {k:'たい焼き',ka:'たいやき',r:'taiyaki',ko:'타이야키(붕어빵)',n:'팥/커스터드',c:'sweet',e:'🐟'},
+  {k:'どら焼き',ka:'どらやき',r:'dorayaki',ko:'도라야키',n:'팥 든 카스텔라',c:'sweet',e:'🥮'},
+  {k:'団子',ka:'だんご',r:'dango',ko:'당고(경단)',n:'みたらし=간장시럽',c:'sweet',e:'🍡'},
+  {k:'餅',ka:'もち',r:'mochi',ko:'떡(모찌)',n:'',c:'sweet',e:'🍡'},
+  {k:'かき氷',ka:'かきごおり',r:'kakigōri',ko:'빙수',n:'여름 명물',c:'sweet',e:'🍧'},
+  {k:'ソフトクリーム',ka:'ソフトクリーム',r:'sofuto kurīmu',ko:'소프트아이스크림',n:'',c:'sweet',e:'🍦'},
+  {k:'パフェ',ka:'パフェ',r:'pafe',ko:'파르페',n:'',c:'sweet',e:'🍨'},
+  {k:'クレープ',ka:'クレープ',r:'kurēpu',ko:'크레페',n:'',c:'sweet',e:'🥞'},
+  {k:'プリン',ka:'プリン',r:'purin',ko:'푸딩',n:'',c:'sweet',e:'🍮'},
+  {k:'和菓子',ka:'わがし',r:'wagashi',ko:'화과자',n:'전통 과자',c:'sweet',e:'🍡'},
+  {k:'抹茶',ka:'まっちゃ',r:'matcha',ko:'말차',n:'抹茶アイス=말차 아이스',c:'sweet',e:'🍵'},
+  // ===== 면류 추가 =====
+  {k:'担々麺',ka:'たんたんめん',r:'tantanmen',ko:'탄탄면',n:'매콤 깨소스',c:'noodle',e:'🍜'},
+  {k:'油そば',ka:'あぶらそば',r:'abura soba',ko:'아부라소바(국물無)',n:'기름·양념 비빔면',c:'noodle',e:'🍜'},
+  {k:'皿うどん',ka:'さらうどん',r:'sara udon',ko:'사라우동(바삭면)',n:'나가사키·규슈',c:'noodle',e:'🍜'},
+  // ===== 고기·튀김 추가 =====
+  {k:'ステーキ',ka:'ステーキ',r:'sutēki',ko:'스테이크',n:'',c:'meat',e:'🥩'},
+  {k:'生姜焼き',ka:'しょうがやき',r:'shōgayaki',ko:'돼지 생강구이',n:'',c:'meat',e:'🍖'},
+  {k:'コロッケ',ka:'コロッケ',r:'korokke',ko:'고로케',n:'',c:'meat',e:'🥔'},
+  {k:'メンチカツ',ka:'メンチカツ',r:'menchi katsu',ko:'멘치카츠',n:'다진고기 튀김',c:'meat',e:'🍖'},
+  // ===== 해산물 추가 =====
+  {k:'雲丹',ka:'うに',r:'uni',ko:'성게',n:'초밥 고급',c:'seafood',e:'🍣'},
+  {k:'いくら',ka:'いくら',r:'ikura',ko:'연어알',n:'',c:'seafood',e:'🍣'},
+  {k:'帆立',ka:'ほたて',r:'hotate',ko:'가리비',n:'',c:'seafood',e:'🐚'},
+  {k:'穴子',ka:'あなご',r:'anago',ko:'붕장어',n:'초밥/덮밥',c:'seafood',e:'🍣'},
+  {k:'鰤',ka:'ぶり',r:'buri',ko:'방어',n:'겨울 제철',c:'seafood',e:'🐟'},
+  {k:'鯛',ka:'たい',r:'tai',ko:'도미',n:'',c:'seafood',e:'🐟'},
+  {k:'鯖',ka:'さば',r:'saba',ko:'고등어',n:'',c:'seafood',e:'🐟'},
+  // ===== 밥·사이드 추가 =====
+  {k:'茶碗蒸し',ka:'ちゃわんむし',r:'chawanmushi',ko:'계란찜',n:'',c:'side',e:'🍮'},
+  {k:'納豆',ka:'なっとう',r:'nattō',ko:'낫토',n:'발효 콩',c:'side',e:'🫘'},
+  {k:'お吸い物',ka:'おすいもの',r:'osuimono',ko:'맑은국',n:'',c:'side',e:'🍵'},
+  // ===== 음료 추가 =====
+  {k:'烏龍茶',ka:'ウーロンちゃ',r:'ūron cha',ko:'우롱차',n:'',c:'drink',e:'🍵'},
+  {k:'緑茶',ka:'りょくちゃ',r:'ryokucha',ko:'녹차',n:'',c:'drink',e:'🍵'},
+  {k:'梅酒',ka:'うめしゅ',r:'umeshu',ko:'매실주',n:'ロック=온더락',c:'drink',e:'🍶'},
+  {k:'レモンサワー',ka:'レモンサワー',r:'remon sawā',ko:'레몬사와',n:'이자카야 인기',c:'drink',e:'🍋'},
+  {k:'抹茶ラテ',ka:'まっちゃラテ',r:'matcha rate',ko:'말차라떼',n:'',c:'drink',e:'🍵'},
+  // ===== 옵션·조미료 추가 =====
+  {k:'醤油',ka:'しょうゆ',r:'shōyu',ko:'간장',n:'',c:'opt',e:'🍶'},
+  {k:'塩',ka:'しお',r:'shio',ko:'소금',n:'',c:'opt',e:'🧂'},
+  {k:'七味',ka:'しちみ',r:'shichimi',ko:'시치미(고춧가루)',n:'우동·라멘에',c:'opt',e:'🌶️'},
+  {k:'山葵',ka:'わさび',r:'wasabi',ko:'와사비',n:'サビ抜き=와사비 빼기',c:'opt',e:'🌿'},
+  {k:'大蒜',ka:'にんにく',r:'ninniku',ko:'마늘',n:'',c:'opt',e:'🧄'},
+  {k:'おかわり',ka:'おかわり',r:'okawari',ko:'리필(추가)',n:'밥·음료 무료 리필',c:'opt',e:'🔄'},
+  {k:'少なめ',ka:'すくなめ',r:'sukuname',ko:'적게',n:'ご飯少なめ=밥 적게',c:'opt',e:'📉'}
 ];
 const CATS=[
-  ['all','전체'],['fukuoka','⭐후쿠오카'],['noodle','🍜면'],['meat','🍖고기·튀김'],
-  ['seafood','🐟해산물'],['side','🍚밥·사이드'],['drink','🍺음료'],['opt','🌶️옵션·표시']
+  ['all','전체'],['fukuoka','⭐후쿠오카'],['region','🗾전국명물'],['noodle','🍜면'],
+  ['don','🍱덮밥'],['meat','🍖고기·튀김'],['seafood','🐟해산물'],['izakaya','🍢이자카야'],
+  ['side','🍚밥·사이드'],['sweet','🍡디저트'],['drink','🍺음료'],['opt','🌶️옵션·조미료']
 ];
+const CAT_EMOJI={fukuoka:'🍜',region:'🗾',noodle:'🍜',don:'🍱',meat:'🍖',seafood:'🐟',izakaya:'🍢',side:'🍚',sweet:'🍡',drink:'🍺',opt:'📋'};
 let curCat='all';
 function renderCats(){
   const b=document.getElementById('catBar'); b.innerHTML='';
@@ -369,7 +458,9 @@ function renderWords(){
   document.getElementById('wcount').textContent=list.length+'개';
   list.forEach(w=>{
     const c=document.createElement('div'); c.className='card';
-    c.innerHTML=`<div class="jp"><div class="kanji">${w.k}</div><div class="kana">${w.ka}</div></div>
+    const emo=w.e||CAT_EMOJI[w.c]||'🍽️';
+    c.innerHTML=`<div class="thumb">${emo}</div>
+      <div class="jp"><div class="kanji">${w.k}</div><div class="kana">${w.ka}</div></div>
       <div class="info"><div class="romaji">${w.r}</div><div class="ko">${w.ko}</div>${w.n?`<div class="note">${w.n}</div>`:''}</div>
       <div class="spk">🔊</div>`;
     c.onclick=()=>speak(w.ka);
@@ -492,11 +583,175 @@ const SCENES=[
     {w:'me',j:'ごちそうさまでした',r:'gochisōsama deshita',k:'잘 먹었습니다 (나갈 때)'},
     {w:'me',j:'とても美味しいです',r:'totemo oishii desu',k:'정말 맛있어요'},
     {w:'me',j:'大丈夫です',r:'daijōbu desu',k:'괜찮아요 (사양/긍정 둘 다)'}
+  ]},
+  // ===== 🍽️ 식당 추가 =====
+  {emo:'📞',cat:'dining',title:'예약하기',tip:'予約(よやく)=예약. 満席(まんせき)=만석.',lines:[
+    {w:'me',j:'予約をお願いします',r:'yoyaku o onegai shimasu',k:'예약하고 싶어요'},
+    {w:'me',j:'今夜7時、二人です',r:'kon\'ya shichi-ji, futari desu',k:'오늘 저녁 7시, 두 명이요'},
+    {w:'st',j:'お名前は？',r:'onamae wa?',k:'성함이?'},
+    {w:'me',j:'キムです',r:'kimu desu',k:'김이요'},
+    {w:'me',j:'予約していません',r:'yoyaku shite imasen',k:'예약 안 했어요'},
+    {w:'st',j:'満席です',r:'manseki desu',k:'만석입니다'}
+  ]},
+  {emo:'🍣',cat:'dining',title:'스시야(초밥집)',tip:'おまかせ=주방장 추천 코스. あがり=차(스시집 용어).',lines:[
+    {w:'me',j:'おまかせでお願いします',r:'omakase de onegai shimasu',k:'오마카세(추천)로요'},
+    {w:'me',j:'わさび抜きでお願いします',r:'wasabi nuki de onegai shimasu',k:'와사비 빼주세요'},
+    {w:'me',j:'これは何の魚ですか？',r:'kore wa nan no sakana?',k:'이건 무슨 생선이에요?'},
+    {w:'me',j:'あがりください',r:'agari kudasai',k:'차 주세요(스시집)'},
+    {w:'me',j:'一貫ずつください',r:'ikkan zutsu kudasai',k:'한 점씩 주세요'}
+  ]},
+  {emo:'⏰',cat:'dining',title:'라스트오더 · 마무리',tip:'ラストオーダー=주문 마감. 食べ放題집에서 자주 들음.',lines:[
+    {w:'st',j:'ラストオーダーです',r:'rasuto ōdā desu',k:'라스트오더(주문 마감)입니다'},
+    {w:'me',j:'最後にこれをください',r:'saigo ni kore o kudasai',k:'마지막으로 이거 주세요'},
+    {w:'me',j:'もう大丈夫です',r:'mō daijōbu desu',k:'이제 됐어요(그만)'}
+  ]},
+  // ===== 🛒 쇼핑 추가 =====
+  {emo:'🛒',cat:'shop',title:'슈퍼마켓 계산',tip:'レジ袋(ぶくろ)=비닐봉투(유료 많음).',lines:[
+    {w:'st',j:'レジ袋はご利用ですか？',r:'reji-bukuro wa goriyō?',k:'비닐봉투 필요하세요?'},
+    {w:'me',j:'レジ袋ください',r:'reji-bukuro kudasai',k:'봉투 주세요'},
+    {w:'me',j:'そのままで大丈夫です',r:'sonomama de daijōbu desu',k:'그냥 주세요(봉투 X)'},
+    {w:'me',j:'別々の袋にしてください',r:'betsubetsu no fukuro ni…',k:'봉투 따로 담아주세요'},
+    {w:'st',j:'お会計、千円です',r:'okaikei, sen en desu',k:'합계 천 엔입니다'}
+  ]},
+  {emo:'🎁',cat:'shop',title:'기념품 · 선물',tip:'お土産(おみやげ)=기념품. 賞味期限(きげん)=유통기한.',lines:[
+    {w:'me',j:'お土産を探しています',r:'omiyage o sagashite imasu',k:'기념품 찾고 있어요'},
+    {w:'me',j:'人気のものはどれですか？',r:'ninki no mono wa dore?',k:'인기 있는 게 뭐예요?'},
+    {w:'me',j:'プレゼント用に包んでください',r:'purezento-yō ni tsutsunde…',k:'선물용으로 포장해주세요'},
+    {w:'me',j:'賞味期限はいつまでですか？',r:'shōmi kigen wa itsu made?',k:'유통기한 언제까지예요?'},
+    {w:'me',j:'試食できますか？',r:'shishoku dekimasu ka?',k:'시식돼요?'}
+  ]},
+  {emo:'👕',cat:'shop',title:'옷 · 사이즈',tip:'試着(しちゃく)=입어보기. 色違い(いろちがい)=다른 색.',lines:[
+    {w:'me',j:'Mサイズはありますか？',r:'M saizu wa arimasu ka?',k:'M사이즈 있어요?'},
+    {w:'me',j:'試着してもいいですか？',r:'shichaku shite mo ii?',k:'입어봐도 돼요?'},
+    {w:'me',j:'もう少し大きいのはありますか？',r:'mō sukoshi ōkii no…?',k:'좀 더 큰 거 있어요?'},
+    {w:'me',j:'色違いはありますか？',r:'irochigai wa arimasu ka?',k:'다른 색 있어요?'},
+    {w:'st',j:'お似合いです',r:'oniai desu',k:'잘 어울리세요'}
+  ]},
+  // ===== 🚃 이동 =====
+  {emo:'🛂',cat:'transport',title:'공항 · 입국심사',tip:'観光(かんこう)=관광. 泊(はく)=박(숙박 일수).',lines:[
+    {w:'st',j:'入国の目的は？',r:'nyūkoku no mokuteki wa?',k:'입국 목적은?'},
+    {w:'me',j:'観光です',r:'kankō desu',k:'관광이요'},
+    {w:'me',j:'三泊四日です',r:'san-paku yokka desu',k:'3박 4일이요'},
+    {w:'me',j:'ホテルに泊まります',r:'hoteru ni tomarimasu',k:'호텔에 묵어요'},
+    {w:'st',j:'写真とパスポートをお願いします',r:'shashin to pasupōto o…',k:'사진과 여권 주세요'}
+  ]},
+  {emo:'🚖',cat:'transport',title:'택시',tip:'~まで=~까지. 지도 보여주면 제일 확실.',lines:[
+    {w:'me',j:'博多駅までお願いします',r:'Hakata-eki made onegai shimasu',k:'하카타역까지 가주세요'},
+    {w:'me',j:'ここまでお願いします',r:'koko made onegai shimasu',k:'여기까지요(지도 보여주며)'},
+    {w:'me',j:'急いでいます',r:'isoide imasu',k:'좀 급해요'},
+    {w:'me',j:'ここで停めてください',r:'koko de tomete kudasai',k:'여기서 세워주세요'},
+    {w:'me',j:'いくらですか？',r:'ikura desu ka?',k:'얼마예요?'}
+  ]},
+  {emo:'🚇',cat:'transport',title:'전철 · IC카드',tip:'チャージ=충전. ~番線(ばんせん)=몇 번 승강장.',lines:[
+    {w:'me',j:'切符はどこで買えますか？',r:'kippu wa doko de kaemasu ka?',k:'표 어디서 사요?'},
+    {w:'me',j:'ICカードをチャージしたいです',r:'IC kādo o chāji shitai desu',k:'교통카드 충전하고 싶어요'},
+    {w:'me',j:'この電車は天神に止まりますか？',r:'kono densha wa Tenjin ni tomarimasu ka?',k:'이 전철 텐진 서요?'},
+    {w:'me',j:'何番線ですか？',r:'nan-bansen desu ka?',k:'몇 번 승강장이에요?'},
+    {w:'me',j:'乗り換えはどこですか？',r:'norikae wa doko desu ka?',k:'환승은 어디서 해요?'}
+  ]},
+  {emo:'🚌',cat:'transport',title:'버스',tip:'両替(りょうがえ)=잔돈 교환(동전기). 着いたら=도착하면.',lines:[
+    {w:'me',j:'太宰府に行きますか？',r:'Dazaifu ni ikimasu ka?',k:'다자이후 가요?'},
+    {w:'me',j:'料金はいくらですか？',r:'ryōkin wa ikura desu ka?',k:'요금 얼마예요?'},
+    {w:'me',j:'着いたら教えてください',r:'tsuitara oshiete kudasai',k:'도착하면 알려주세요'},
+    {w:'me',j:'両替できますか？',r:'ryōgae dekimasu ka?',k:'잔돈 교환돼요?'}
+  ]},
+  {emo:'🧭',cat:'transport',title:'길 묻기',tip:'まっすぐ=직진, 右(みぎ)=오른쪽, 左(ひだり)=왼쪽.',lines:[
+    {w:'me',j:'道に迷いました',r:'michi ni mayoimashita',k:'길을 잃었어요'},
+    {w:'me',j:'ここはどこですか？',r:'koko wa doko desu ka?',k:'여기가 어디예요?'},
+    {w:'me',j:'ここから近いですか？',r:'koko kara chikai desu ka?',k:'여기서 가까워요?'},
+    {w:'me',j:'歩いて行けますか？',r:'aruite ikemasu ka?',k:'걸어갈 수 있어요?'},
+    {w:'st',j:'まっすぐです / 右です / 左です',r:'massugu / migi / hidari desu',k:'직진/오른쪽/왼쪽이에요'}
+  ]},
+  // ===== 🏨 숙소 =====
+  {emo:'🏨',cat:'hotel',title:'호텔 체크인',tip:'チェックイン=체크인. 朝食(ちょうしょく)=조식.',lines:[
+    {w:'me',j:'チェックインお願いします',r:'chekku in onegai shimasu',k:'체크인할게요'},
+    {w:'me',j:'予約しています、キムです',r:'yoyaku shite imasu, kimu desu',k:'예약했어요, 김이요'},
+    {w:'st',j:'パスポートをお願いします',r:'pasupōto o onegai shimasu',k:'여권 주세요'},
+    {w:'me',j:'朝食は何時からですか？',r:'chōshoku wa nan-ji kara?',k:'조식 몇 시부터예요?'},
+    {w:'me',j:'Wi-Fiのパスワードは？',r:'waifai no pasuwādo wa?',k:'와이파이 비번은요?'}
+  ]},
+  {emo:'🛎️',cat:'hotel',title:'호텔 요청 · 문제',tip:'タオル=수건. お湯(ゆ)=뜨거운 물.',lines:[
+    {w:'me',j:'タオルをもう一枚ください',r:'taoru o mō ichimai kudasai',k:'수건 한 장 더 주세요'},
+    {w:'me',j:'部屋の鍵をなくしました',r:'heya no kagi o nakushimashita',k:'방 키를 잃어버렸어요'},
+    {w:'me',j:'お湯が出ません',r:'oyu ga demasen',k:'온수가 안 나와요'},
+    {w:'me',j:'荷物を預かってもらえますか？',r:'nimotsu o azukatte moraemasu ka?',k:'짐 맡길 수 있어요?'},
+    {w:'me',j:'部屋を変えてもらえますか？',r:'heya o kaete moraemasu ka?',k:'방 바꿀 수 있어요?'}
+  ]},
+  {emo:'🧳',cat:'hotel',title:'체크아웃',tip:'チェックアウト=체크아웃. 預ける(あずける)=맡기다.',lines:[
+    {w:'me',j:'チェックアウトお願いします',r:'chekku auto onegai shimasu',k:'체크아웃할게요'},
+    {w:'me',j:'荷物を夕方まで預けたいです',r:'nimotsu o yūgata made azuketai…',k:'짐 저녁까지 맡기고 싶어요'},
+    {w:'me',j:'タクシーを呼んでください',r:'takushī o yonde kudasai',k:'택시 불러주세요'},
+    {w:'me',j:'領収書をください',r:'ryōshūsho o kudasai',k:'영수증 주세요'}
+  ]},
+  // ===== 🗺️ 관광 =====
+  {emo:'🗺️',cat:'sight',title:'관광안내 · 입장권',tip:'大人(おとな)=어른, 子供(こども)=어린이. ~枚(まい)=장.',lines:[
+    {w:'me',j:'観光案内所はどこですか？',r:'kankō annaijo wa doko?',k:'관광안내소 어디예요?'},
+    {w:'me',j:'大人二枚ください',r:'otona nimai kudasai',k:'어른 두 장 주세요'},
+    {w:'me',j:'何時まで開いていますか？',r:'nanji made aite imasu ka?',k:'몇 시까지 열어요?'},
+    {w:'me',j:'パンフレットをください',r:'panfuretto o kudasai',k:'팸플릿 주세요'},
+    {w:'me',j:'おすすめの観光地はどこですか？',r:'osusume no kankōchi wa?',k:'추천 관광지는요?'}
+  ]},
+  {emo:'📸',cat:'sight',title:'사진 부탁하기',tip:'撮る(とる)=찍다. もう一枚=한 장 더.',lines:[
+    {w:'me',j:'写真を撮ってもらえますか？',r:'shashin o totte moraemasu ka?',k:'사진 좀 찍어주실래요?'},
+    {w:'me',j:'ここを押してください',r:'koko o oshite kudasai',k:'여기 눌러주세요'},
+    {w:'me',j:'もう一枚お願いします',r:'mō ichimai onegai shimasu',k:'한 장 더 부탁해요'},
+    {w:'me',j:'一緒に撮りましょう',r:'issho ni torimashō',k:'같이 찍어요'}
+  ]},
+  // ===== 🆘 긴급 · 건강 =====
+  {emo:'💊',cat:'trouble',title:'약국 · 증상',tip:'痛い(いたい)=아프다. 薬(くすり)=약.',lines:[
+    {w:'me',j:'頭が痛いです',r:'atama ga itai desu',k:'머리가 아파요'},
+    {w:'me',j:'お腹が痛いです',r:'onaka ga itai desu',k:'배가 아파요'},
+    {w:'me',j:'風邪薬はありますか？',r:'kazegusuri wa arimasu ka?',k:'감기약 있어요?'},
+    {w:'me',j:'酔い止めをください',r:'yoidome o kudasai',k:'멀미약 주세요'},
+    {w:'me',j:'絆創膏をください',r:'bansōkō o kudasai',k:'반창고 주세요'}
+  ]},
+  {emo:'🚑',cat:'trouble',title:'몸이 아플 때 · 병원',tip:'정말 위급하면 救急車(きゅうきゅうしゃ)! 일본 응급은 119.',lines:[
+    {w:'me',j:'気分が悪いです',r:'kibun ga warui desu',k:'속이 안 좋아요'},
+    {w:'me',j:'病院に行きたいです',r:'byōin ni ikitai desu',k:'병원 가고 싶어요'},
+    {w:'me',j:'救急車を呼んでください',r:'kyūkyūsha o yonde kudasai',k:'구급차 불러주세요'},
+    {w:'me',j:'助けてください',r:'tasukete kudasai',k:'도와주세요'},
+    {w:'me',j:'薬を飲んでいます',r:'kusuri o nonde imasu',k:'약 복용 중이에요'}
+  ]},
+  {emo:'🔍',cat:'trouble',title:'분실 · 도난',tip:'なくす=잃다. 交番(こうばん)=파출소.',lines:[
+    {w:'me',j:'財布をなくしました',r:'saifu o nakushimashita',k:'지갑을 잃어버렸어요'},
+    {w:'me',j:'スマホが見つかりません',r:'sumaho ga mitsukarimasen',k:'핸드폰을 못 찾겠어요'},
+    {w:'me',j:'ここに置き忘れました',r:'koko ni okiwasuremashita',k:'여기 두고 갔어요'},
+    {w:'me',j:'交番はどこですか？',r:'kōban wa doko desu ka?',k:'파출소 어디예요?'},
+    {w:'me',j:'警察を呼んでください',r:'keisatsu o yonde kudasai',k:'경찰 불러주세요'}
+  ]},
+  // ===== 🙏 기본 =====
+  {emo:'🙆',cat:'basic',title:'자기소개 · 잡담',tip:'~から来ました=~에서 왔어요. 旅行(りょこう)=여행.',lines:[
+    {w:'me',j:'韓国から来ました',r:'kankoku kara kimashita',k:'한국에서 왔어요'},
+    {w:'me',j:'旅行で来ました',r:'ryokō de kimashita',k:'여행으로 왔어요'},
+    {w:'me',j:'名前はキムです',r:'namae wa kimu desu',k:'이름은 김이에요'},
+    {w:'me',j:'日本語が少しわかります',r:'nihongo ga sukoshi wakarimasu',k:'일본어 조금 알아요'},
+    {w:'me',j:'日本語が話せません',r:'nihongo ga hanasemasen',k:'일본어 못해요'}
+  ]},
+  {emo:'❓',cat:'basic',title:'못 알아들을 때 · 되묻기',tip:'못 알아들으면 이 표현들로! 당황하지 말고 천천히.',lines:[
+    {w:'me',j:'もう一度お願いします',r:'mō ichido onegai shimasu',k:'다시 한번 말해주세요'},
+    {w:'me',j:'ゆっくり話してください',r:'yukkuri hanashite kudasai',k:'천천히 말해주세요'},
+    {w:'me',j:'英語で話せますか？',r:'eigo de hanasemasu ka?',k:'영어로 되세요?'},
+    {w:'me',j:'書いてください',r:'kaite kudasai',k:'적어주세요'},
+    {w:'me',j:'わかりました / わかりません',r:'wakarimashita / wakarimasen',k:'알겠어요 / 모르겠어요'}
   ]}
 ];
+// 기존 13개 시나리오에 카테고리 부여(순서대로)
+['dining','dining','dining','dining','dining','dining','shop','dining','dining','dining','shop','trouble','basic'].forEach((c,i)=>{ if(SCENES[i]&&!SCENES[i].cat) SCENES[i].cat=c; });
+const SCN_CATS=[['all','전체'],['dining','🍽️식당'],['shop','🛒쇼핑'],['transport','🚃이동'],['hotel','🏨숙소'],['sight','🗺️관광'],['trouble','🆘긴급'],['basic','🙏기본']];
+let curScn='all';
+function renderScnCats(){
+  const b=document.getElementById('sceneCatBar'); b.innerHTML='';
+  SCN_CATS.forEach(([id,lbl])=>{
+    const s=document.createElement('span');
+    s.className='cat-pill'+(curScn===id?' on':'');
+    s.textContent=lbl;
+    s.onclick=()=>{curScn=id;renderScnCats();renderScenes();};
+    b.appendChild(s);
+  });
+}
 function renderScenes(){
   const l=document.getElementById('sceneList'); l.innerHTML='';
-  SCENES.forEach(s=>{
+  SCENES.filter(s=>curScn==='all'||s.cat===curScn).forEach(s=>{
     const d=document.createElement('div'); d.className='scn';
     let inner=`<div class="scn-head"><span class="emo">${s.emo}</span><span>${s.title}</span><span class="arr">▶</span></div><div class="scn-body">`;
     s.lines.forEach(ln=>{
@@ -608,7 +863,7 @@ function answer(btn,val,speakFn){
 }
 
 /* ============ init ============ */
-renderGana(); renderCats(); renderWords(); renderScenes(); renderNums(); nextQuiz();
+renderGana(); renderCats(); renderWords(); renderScnCats(); renderScenes(); renderNums(); nextQuiz();
 </script>
 </body>
 </html>
