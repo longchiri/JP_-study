@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#0f1226">
-<title>일본 여행 일본어 마스터</title>
+<title>일본어 연습</title>
 <style>
   :root{
     --bg:#0f1226; --bg2:#171b3d; --card:#1e2350; --card2:#272d63;
@@ -68,6 +68,11 @@
   .card .info .note{font-size:11.5px; color:var(--muted); margin-top:3px; line-height:1.4;}
   .card .spk{flex:0 0 auto; width:38px; height:38px; border-radius:50%; border:1px solid var(--line); background:var(--bg2); color:var(--accent2); font-size:17px; display:grid; place-items:center;}
 
+  .searchwrap{margin:2px 4px 12px;}
+  #wsearch{width:100%; padding:11px 14px; border-radius:12px; border:1px solid var(--line); background:var(--card); color:var(--txt); font-size:14px; outline:none;}
+  #wsearch:focus{border-color:var(--accent);}
+  #wsearch::placeholder{color:var(--muted);}
+  .noresult{text-align:center; color:var(--muted); font-size:13px; padding:20px;}
   .cat-pill{display:inline-block; font-size:11px; padding:3px 10px; border-radius:20px; background:var(--bg2); color:var(--accent2); border:1px solid var(--line); margin:0 6px 8px 0; cursor:pointer;}
   .cat-pill.on{background:var(--accent2); color:#222; font-weight:700;}
 
@@ -125,8 +130,8 @@
 <body>
 <div class="soundbar" id="soundbar" onclick="enableSound()">🔇 소리 켜기</div>
 <header>
-  <h1>🇯🇵 일본 여행 <span>일본어 마스터</span></h1>
-  <p>일본 전역용 · ⭐후쿠오카 명물 포함 · 글자·문장 탭하면 발음</p>
+  <h1>🇯🇵 <span>일본어 연습</span></h1>
+  <p>일본 전역용 · 메뉴·상황·발음 · 글자·문장 탭하면 발음</p>
 </header>
 
 <div class="wrap">
@@ -146,7 +151,8 @@
 
   <!-- ===== 메뉴 ===== -->
   <section id="menu">
-    <h2 class="sec">메뉴 단어 <small id="wcount"></small></h2>
+    <h2 class="sec">메뉴 <small id="wcount"></small></h2>
+    <div class="searchwrap"><input id="wsearch" type="search" placeholder="🔍 검색 (한국어·한자·발음 다 됨, 예: 라멘 / ramen / 寿司)" oninput="onSearch()"></div>
     <div id="catBar"></div>
     <div id="wordList"></div>
   </section>
@@ -435,12 +441,76 @@ const WORDS=[
   {k:'山葵',ka:'わさび',r:'wasabi',ko:'와사비',n:'サビ抜き=와사비 빼기',c:'opt',e:'🌿'},
   {k:'大蒜',ka:'にんにく',r:'ninniku',ko:'마늘',n:'',c:'opt',e:'🧄'},
   {k:'おかわり',ka:'おかわり',r:'okawari',ko:'리필(추가)',n:'밥·음료 무료 리필',c:'opt',e:'🔄'},
-  {k:'少なめ',ka:'すくなめ',r:'sukuname',ko:'적게',n:'ご飯少なめ=밥 적게',c:'opt',e:'📉'}
+  {k:'少なめ',ka:'すくなめ',r:'sukuname',ko:'적게',n:'ご飯少なめ=밥 적게',c:'opt',e:'📉'},
+  // ===== 🍣 스시 네타(재료) 추가 =====
+  {k:'サーモン',ka:'サーモン',r:'sāmon',ko:'연어 초밥',n:'회전초밥 인기 1위',c:'seafood',e:'🍣'},
+  {k:'中トロ',ka:'ちゅうとろ',r:'chūtoro',ko:'참치 중뱃살',n:'적당한 기름',c:'seafood',e:'🍣'},
+  {k:'大トロ',ka:'おおとろ',r:'ōtoro',ko:'참치 대뱃살',n:'가장 기름진 부위',c:'seafood',e:'🍣'},
+  {k:'赤身',ka:'あかみ',r:'akami',ko:'참치 살코기',n:'담백',c:'seafood',e:'🍣'},
+  {k:'ネギトロ',ka:'ネギトロ',r:'negitoro',ko:'네기토로(다진참치)',n:'파+다진참치',c:'seafood',e:'🍣'},
+  {k:'炙りサーモン',ka:'あぶりサーモン',r:'aburi sāmon',ko:'불향 연어',n:'겉만 살짝 구움',c:'seafood',e:'🍣'},
+  {k:'ハマチ',ka:'ハマチ',r:'hamachi',ko:'새끼방어',n:'쫄깃·고소',c:'seafood',e:'🍣'},
+  {k:'カンパチ',ka:'カンパチ',r:'kanpachi',ko:'잿방어',n:'',c:'seafood',e:'🍣'},
+  {k:'えんがわ',ka:'えんがわ',r:'engawa',ko:'광어 지느러미살',n:'쫄깃+고소',c:'seafood',e:'🍣'},
+  {k:'甘海老',ka:'あまえび',r:'amaebi',ko:'단새우',n:'달큰한 생새우',c:'seafood',e:'🍤'},
+  {k:'カツオ',ka:'かつお',r:'katsuo',ko:'가다랑어',n:'たたき=겉만 익힌 회',c:'seafood',e:'🍣'},
+  {k:'しめ鯖',ka:'しめさば',r:'shime saba',ko:'초절임 고등어',n:'식초 절임',c:'seafood',e:'🍣'},
+  {k:'とびこ',ka:'とびこ',r:'tobiko',ko:'날치알',n:'톡톡 식감',c:'seafood',e:'🍣'},
+  {k:'数の子',ka:'かずのこ',r:'kazunoko',ko:'청어알',n:'',c:'seafood',e:'🍣'},
+  {k:'赤貝',ka:'あかがい',r:'akagai',ko:'피조개',n:'',c:'seafood',e:'🍣'},
+  {k:'つぶ貝',ka:'つぶがい',r:'tsubugai',ko:'골뱅이(쯔부)',n:'쫄깃',c:'seafood',e:'🍣'},
+  {k:'鉄火巻',ka:'てっかまき',r:'tekkamaki',ko:'참치 김초밥',n:'마끼',c:'seafood',e:'🍣'},
+  {k:'かっぱ巻',ka:'かっぱまき',r:'kappamaki',ko:'오이 김초밥',n:'',c:'seafood',e:'🍣'},
+  {k:'納豆巻',ka:'なっとうまき',r:'nattō maki',ko:'낫토 김초밥',n:'',c:'seafood',e:'🍣'},
+  {k:'稲荷寿司',ka:'いなりずし',r:'inari zushi',ko:'유부초밥',n:'',c:'seafood',e:'🍣'},
+  {k:'軍艦巻き',ka:'ぐんかんまき',r:'gunkan maki',ko:'군함말이',n:'김으로 두른 초밥',c:'seafood',e:'🍣'},
+  {k:'ガリ',ka:'ガリ',r:'gari',ko:'초생강',n:'입가심용(무료)',c:'seafood',e:'🫚'},
+  // ===== 🍢 야키토리(꼬치) 부위 =====
+  {k:'もも',ka:'もも',r:'momo',ko:'닭다리살 꼬치',n:'',c:'izakaya',e:'🍢'},
+  {k:'ねぎま',ka:'ねぎま',r:'negima',ko:'파+닭 꼬치',n:'',c:'izakaya',e:'🍢'},
+  {k:'つくね',ka:'つくね',r:'tsukune',ko:'닭완자 꼬치',n:'',c:'izakaya',e:'🍢'},
+  {k:'鶏皮',ka:'とりかわ',r:'torikawa',ko:'닭껍질 꼬치',n:'博多 명물(바삭)',c:'izakaya',e:'🍢'},
+  {k:'ハツ',ka:'ハツ',r:'hatsu',ko:'닭염통',n:'',c:'izakaya',e:'🍢'},
+  {k:'レバー',ka:'レバー',r:'rebā',ko:'닭간',n:'',c:'izakaya',e:'🍢'},
+  {k:'ぼんじり',ka:'ぼんじり',r:'bonjiri',ko:'닭꽁지살',n:'기름지고 쫄깃',c:'izakaya',e:'🍢'},
+  {k:'せせり',ka:'せせり',r:'seseri',ko:'닭목살',n:'',c:'izakaya',e:'🍢'},
+  {k:'軟骨',ka:'なんこつ',r:'nankotsu',ko:'닭 물렁뼈',n:'오독오독',c:'izakaya',e:'🍢'},
+  {k:'しいたけ',ka:'しいたけ',r:'shiitake',ko:'표고버섯 꼬치',n:'',c:'izakaya',e:'🍄'},
+  {k:'アスパラ巻き',ka:'アスパラまき',r:'asupara maki',ko:'베이컨 아스파라말이',n:'',c:'izakaya',e:'🍢'},
+  // ===== 🍢 이자카야 안주 추가 =====
+  {k:'軟骨唐揚げ',ka:'なんこつからあげ',r:'nankotsu karaage',ko:'물렁뼈 튀김',n:'',c:'izakaya',e:'🍗'},
+  {k:'馬刺し',ka:'ばさし',r:'basashi',ko:'말고기 회',n:'규슈 인기',c:'izakaya',e:'🍖'},
+  {k:'たこわさ',ka:'たこわさ',r:'takowasa',ko:'문어와사비 무침',n:'술안주',c:'izakaya',e:'🐙'},
+  {k:'焼きおにぎり',ka:'やきおにぎり',r:'yaki onigiri',ko:'구운 주먹밥',n:'',c:'izakaya',e:'🍙'},
+  {k:'焼きナス',ka:'やきなす',r:'yaki nasu',ko:'가지구이',n:'',c:'izakaya',e:'🍆'},
+  {k:'あさりの酒蒸し',ka:'あさりのさかむし',r:'asari sakamushi',ko:'바지락 술찜',n:'',c:'izakaya',e:'🦪'},
+  {k:'アジフライ',ka:'アジフライ',r:'aji furai',ko:'전갱이 튀김',n:'',c:'izakaya',e:'🐟'},
+  {k:'イカ焼き',ka:'いかやき',r:'ika yaki',ko:'오징어구이',n:'',c:'izakaya',e:'🦑'},
+  {k:'牛すじ煮込み',ka:'ぎゅうすじにこみ',r:'gyūsuji nikomi',ko:'소힘줄 조림',n:'',c:'izakaya',e:'🍲'},
+  {k:'明太子卵焼き',ka:'めんたいこたまごやき',r:'mentaiko tamagoyaki',ko:'명란 계란말이',n:'후쿠오카 인기',c:'izakaya',e:'🍳'},
+  {k:'おでん',ka:'おでん',r:'oden',ko:'오뎅탕',n:'',c:'izakaya',e:'🍢'},
+  {k:'冷やしトマト',ka:'ひやしトマト',r:'hiyashi tomato',ko:'차가운 토마토',n:'',c:'izakaya',e:'🍅'},
+  {k:'キムチ',ka:'キムチ',r:'kimuchi',ko:'김치',n:'',c:'izakaya',e:'🌶️'},
+  {k:'シーザーサラダ',ka:'シーザーサラダ',r:'shīzā sarada',ko:'시저 샐러드',n:'',c:'izakaya',e:'🥗'},
+  // ===== ⭐ 후쿠오카 가게 명물 추가 =====
+  {k:'焼きラーメン',ka:'やきラーメン',r:'yaki rāmen',ko:'야키라멘(볶음 라멘)',n:'텐진 야타이 발상 명물',c:'fukuoka',e:'🍜'},
+  {k:'豚バラ串',ka:'ぶたバラぐし',r:'butabara gushi',ko:'돼지삼겹 꼬치',n:'후쿠오카 야키토리 1위',c:'fukuoka',e:'🍢'},
+  {k:'一口餃子',ka:'ひとくちぎょうざ',r:'hitokuchi gyōza',ko:'한입 교자',n:'작게 빚은 군만두',c:'fukuoka',e:'🥟'},
+  {k:'ごぼう天うどん',ka:'ごぼうてんうどん',r:'gobō ten udon',ko:'우엉튀김 우동',n:'후쿠오카 우동 정석',c:'fukuoka',e:'🍜'},
+  {k:'丸天うどん',ka:'まるてんうどん',r:'maru ten udon',ko:'마루텐(어묵) 우동',n:'둥근 어묵 토핑',c:'fukuoka',e:'🍜'},
+  {k:'かしわめし',ka:'かしわめし',r:'kashiwa meshi',ko:'닭고기 솥밥',n:'규슈 닭밥(かしわ=닭)',c:'fukuoka',e:'🍚'},
+  {k:'がめ煮',ka:'がめに',r:'gameni',ko:'가메니(닭채소조림)',n:'후쿠오카식 치쿠젠니',c:'fukuoka',e:'🍲'},
+  {k:'おきゅうと',ka:'おきゅうと',r:'okyūto',ko:'오큐토(우뭇가사리묵)',n:'하카타 아침 반찬',c:'fukuoka',e:'🍢'},
+  // ===== 🍺 음료 추가 =====
+  {k:'芋焼酎',ka:'いもじょうちゅう',r:'imo jōchū',ko:'고구마 소주',n:'',c:'drink',e:'🍶'},
+  {k:'麦焼酎',ka:'むぎじょうちゅう',r:'mugi jōchū',ko:'보리 소주',n:'규슈 명물',c:'drink',e:'🍶'},
+  {k:'ウーロンハイ',ka:'ウーロンハイ',r:'ūron hai',ko:'우롱하이(우롱+소주)',n:'',c:'drink',e:'🍵'},
+  {k:'角ハイボール',ka:'かくハイボール',r:'kaku haibōru',ko:'카쿠 하이볼',n:'위스키 하이볼',c:'drink',e:'🥃'}
 ];
 const CATS=[
-  ['all','전체'],['fukuoka','⭐후쿠오카'],['region','🗾전국명물'],['noodle','🍜면'],
-  ['don','🍱덮밥'],['meat','🍖고기·튀김'],['seafood','🐟해산물'],['izakaya','🍢이자카야'],
-  ['side','🍚밥·사이드'],['sweet','🍡디저트'],['drink','🍺음료'],['opt','🌶️옵션·조미료']
+  ['all','전체 메뉴'],['fukuoka','⭐후쿠오카 메뉴'],['region','🗾전국명물 메뉴'],['noodle','🍜라멘·면 메뉴'],
+  ['don','🍱덮밥 메뉴'],['meat','🍖고기·튀김 메뉴'],['seafood','🍣스시·해산물 메뉴'],['izakaya','🍢이자카야 메뉴'],
+  ['side','🍚밥·사이드 메뉴'],['sweet','🍡디저트 메뉴'],['drink','🍺음료 메뉴'],['opt','🌶️조미료·옵션']
 ];
 const CAT_EMOJI={fukuoka:'🍜',region:'🗾',noodle:'🍜',don:'🍱',meat:'🍖',seafood:'🐟',izakaya:'🍢',side:'🍚',sweet:'🍡',drink:'🍺',opt:'📋'};
 /* 자유 라이선스(CC) 사진 키워드 — loremflickr 태그. 없으면 아이콘 표시, 안 뜨면 자동 아이콘 대체 */
@@ -456,6 +526,13 @@ const IMG_KW={
   'カレー':'curry','味噌汁':'misosoup','漬物':'tsukemono','サラダ':'salad','おにぎり':'onigiri','弁当':'bento','茶碗蒸し':'chawanmushi','納豆':'natto',
   'お茶':'greentea','生ビール':'beer','焼酎':'shochu','日本酒':'sake','ハイボール':'highball','珈琲':'coffee','烏龍茶':'tea','緑茶':'greentea','梅酒':'umeshu','レモンサワー':'cocktail','抹茶ラテ':'matcha,latte'
 };
+Object.assign(IMG_KW,{
+  'サーモン':'salmon,sushi','中トロ':'tuna,sushi','大トロ':'otoro,tuna','赤身':'tuna,sushi','ネギトロ':'negitoro','炙りサーモン':'salmon,sushi','ハマチ':'hamachi','カンパチ':'kanpachi','えんがわ':'engawa','甘海老':'shrimp,sushi','カツオ':'katsuo','しめ鯖':'shimesaba','とびこ':'tobiko','数の子':'kazunoko','赤貝':'sushi','つぶ貝':'sushi','鉄火巻':'tekkamaki','かっぱ巻':'kappamaki','納豆巻':'natto,sushi','稲荷寿司':'inari,sushi','軍艦巻き':'gunkan,sushi','ガリ':'ginger',
+  'もも':'yakitori','ねぎま':'yakitori','つくね':'tsukune','鶏皮':'chicken,skin','ハツ':'yakitori','レバー':'yakitori','ぼんじり':'yakitori','せせり':'yakitori','軟骨':'yakitori','しいたけ':'shiitake','アスパラ巻き':'bacon,asparagus',
+  '軟骨唐揚げ':'karaage','馬刺し':'basashi','たこわさ':'octopus','焼きおにぎり':'onigiri','焼きナス':'eggplant','あさりの酒蒸し':'clams','アジフライ':'fried,fish','イカ焼き':'squid','牛すじ煮込み':'beef,stew','明太子卵焼き':'tamagoyaki','おでん':'oden','冷やしトマト':'tomato','キムチ':'kimchi','シーザーサラダ':'caesar,salad',
+  '焼きラーメン':'yakisoba','豚バラ串':'pork,skewer','一口餃子':'gyoza','ごぼう天うどん':'udon','丸天うどん':'udon','かしわめし':'chicken,rice','がめ煮':'nimono','おきゅうと':'japanese,food',
+  '芋焼酎':'shochu','麦焼酎':'shochu','ウーロンハイ':'cocktail','角ハイボール':'highball'
+});
 let curCat='all';
 function renderCats(){
   const b=document.getElementById('catBar'); b.innerHTML='';
@@ -463,14 +540,23 @@ function renderCats(){
     const s=document.createElement('span');
     s.className='cat-pill'+(curCat===id?' on':'');
     s.textContent=lbl;
-    s.onclick=()=>{curCat=id;renderCats();renderWords();};
+    s.onclick=()=>{curCat=id; searchTerm=''; const sb=document.getElementById('wsearch'); if(sb)sb.value=''; renderCats();renderWords();};
     b.appendChild(s);
   });
 }
+let searchTerm='';
+function norm(s){ return (s||'').toLowerCase().replace(/[āàá]/g,'a').replace(/[īìí]/g,'i').replace(/[ūùú]/g,'u').replace(/[ēèé]/g,'e').replace(/[ōòó]/g,'o'); }
+function onSearch(){ searchTerm=norm((document.getElementById('wsearch').value||'').trim()); renderWords(); }
 function renderWords(){
   const l=document.getElementById('wordList'); l.innerHTML='';
-  const list=WORDS.filter(w=>curCat==='all'||w.c===curCat);
+  let list;
+  if(searchTerm){
+    list=WORDS.filter(w=>norm(w.k+' '+w.ka+' '+w.r+' '+w.ko+' '+(w.n||'')).includes(searchTerm));
+  }else{
+    list=WORDS.filter(w=>curCat==='all'||w.c===curCat);
+  }
   document.getElementById('wcount').textContent=list.length+'개';
+  if(!list.length){ l.innerHTML='<div class="noresult">검색 결과가 없어요 😢<br>다른 말로 찾아보세요</div>'; return; }
   list.forEach(w=>{
     const c=document.createElement('div'); c.className='card';
     const emo=w.e||CAT_EMOJI[w.c]||'🍽️';
