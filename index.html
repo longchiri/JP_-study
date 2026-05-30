@@ -505,14 +505,115 @@ const WORDS=[
   {k:'芋焼酎',ka:'いもじょうちゅう',r:'imo jōchū',ko:'고구마 소주',n:'',c:'drink',e:'🍶'},
   {k:'麦焼酎',ka:'むぎじょうちゅう',r:'mugi jōchū',ko:'보리 소주',n:'규슈 명물',c:'drink',e:'🍶'},
   {k:'ウーロンハイ',ka:'ウーロンハイ',r:'ūron hai',ko:'우롱하이(우롱+소주)',n:'',c:'drink',e:'🍵'},
-  {k:'角ハイボール',ka:'かくハイボール',r:'kaku haibōru',ko:'카쿠 하이볼',n:'위스키 하이볼',c:'drink',e:'🥃'}
+  {k:'角ハイボール',ka:'かくハイボール',r:'kaku haibōru',ko:'카쿠 하이볼',n:'위스키 하이볼',c:'drink',e:'🥃'},
+  // ===== 🍜 라멘 토핑 =====
+  {k:'チャーシュー',ka:'チャーシュー',r:'chāshū',ko:'차슈(돼지고기 토핑)',n:'チャーシュー麺=차슈 듬뿍',c:'noodle',e:'🍖'},
+  {k:'味玉',ka:'あじたま',r:'ajitama',ko:'양념 반숙계란',n:'味付け玉子',c:'noodle',e:'🥚'},
+  {k:'メンマ',ka:'メンマ',r:'menma',ko:'멘마(죽순 절임)',n:'라멘 단골 토핑',c:'noodle',e:'🎋'},
+  {k:'海苔',ka:'のり',r:'nori',ko:'김',n:'',c:'noodle',e:'🟩'},
+  {k:'もやし',ka:'もやし',r:'moyashi',ko:'숙주',n:'',c:'noodle',e:'🌱'},
+  {k:'背脂',ka:'せあぶら',r:'seabura',ko:'등지방(국물 기름)',n:'こってり=진함',c:'noodle',e:'⚪'},
+  // ===== 🍜 우동·소바 종류 =====
+  {k:'かけうどん',ka:'かけうどん',r:'kake udon',ko:'가케우동(기본 국물)',n:'가장 기본',c:'noodle',e:'🍜'},
+  {k:'きつねうどん',ka:'きつねうどん',r:'kitsune udon',ko:'유부 우동',n:'단 유부 토핑',c:'noodle',e:'🦊'},
+  {k:'たぬきうどん',ka:'たぬきうどん',r:'tanuki udon',ko:'타누키우동(튀김부스러기)',n:'天かす 토핑',c:'noodle',e:'🍜'},
+  {k:'肉うどん',ka:'にくうどん',r:'niku udon',ko:'고기 우동',n:'',c:'noodle',e:'🍜'},
+  {k:'カレーうどん',ka:'カレーうどん',r:'karē udon',ko:'카레 우동',n:'',c:'noodle',e:'🍛'},
+  {k:'釜玉うどん',ka:'かまたまうどん',r:'kamatama udon',ko:'가마타마(계란 비빔 우동)',n:'',c:'noodle',e:'🥚'},
+  {k:'ざるそば',ka:'ざるそば',r:'zaru soba',ko:'자루소바(냉메밀)',n:'간장에 찍어 먹음',c:'noodle',e:'🍜'},
+  {k:'天ぷらそば',ka:'てんぷらそば',r:'tenpura soba',ko:'튀김 소바',n:'',c:'noodle',e:'🍤'},
+  {k:'月見そば',ka:'つきみそば',r:'tsukimi soba',ko:'츠키미소바(계란)',n:'날계란 토핑',c:'noodle',e:'🌕'},
+  {k:'素麺',ka:'そうめん',r:'sōmen',ko:'소면',n:'여름 냉면',c:'noodle',e:'🍜'},
+  // ===== 🍱 정식·덮밥 추가 =====
+  {k:'とんかつ定食',ka:'とんかつていしょく',r:'tonkatsu teishoku',ko:'돈카츠 정식',n:'밥+국+양배추',c:'don',e:'🍱'},
+  {k:'焼き魚定食',ka:'やきざかなていしょく',r:'yakizakana teishoku',ko:'생선구이 정식',n:'',c:'don',e:'🐟'},
+  {k:'刺身定食',ka:'さしみていしょく',r:'sashimi teishoku',ko:'회 정식',n:'',c:'don',e:'🐟'},
+  {k:'生姜焼き定食',ka:'しょうがやきていしょく',r:'shōgayaki teishoku',ko:'돼지생강구이 정식',n:'',c:'don',e:'🍖'},
+  {k:'唐揚げ定食',ka:'からあげていしょく',r:'karaage teishoku',ko:'가라아게 정식',n:'',c:'don',e:'🍗'},
+  {k:'ハンバーグ定食',ka:'ハンバーグていしょく',r:'hanbāgu teishoku',ko:'함박 정식',n:'',c:'don',e:'🍱'},
+  {k:'カツカレー',ka:'カツカレー',r:'katsu karē',ko:'가츠카레',n:'돈카츠+카레',c:'don',e:'🍛'},
+  {k:'キーマカレー',ka:'キーマカレー',r:'kīma karē',ko:'키마카레(다진고기)',n:'',c:'don',e:'🍛'},
+  {k:'中華丼',ka:'ちゅうかどん',r:'chūkadon',ko:'중화덮밥',n:'팔보채 덮밥',c:'don',e:'🍚'},
+  {k:'天津飯',ka:'てんしんはん',r:'tenshinhan',ko:'텐신항(게살계란덮밥)',n:'',c:'don',e:'🍚'},
+  // ===== 🥩 야키니쿠 부위 =====
+  {k:'カルビ',ka:'カルビ',r:'karubi',ko:'갈비',n:'기름진 부위',c:'yakiniku',e:'🥩'},
+  {k:'上カルビ',ka:'じょうカルビ',r:'jō karubi',ko:'상갈비',n:'上=상급',c:'yakiniku',e:'🥩'},
+  {k:'ロース',ka:'ロース',r:'rōsu',ko:'로스(등심)',n:'담백',c:'yakiniku',e:'🥩'},
+  {k:'ハラミ',ka:'ハラミ',r:'harami',ko:'안창살',n:'쫄깃 인기',c:'yakiniku',e:'🥩'},
+  {k:'タン',ka:'タン',r:'tan',ko:'우설(소혀)',n:'タン塩=소금 우설',c:'yakiniku',e:'🥩'},
+  {k:'ホルモン',ka:'ホルモン',r:'horumon',ko:'호르몬(곱창·내장)',n:'',c:'yakiniku',e:'🍖'},
+  {k:'ミノ',ka:'ミノ',r:'mino',ko:'천엽(소위)',n:'',c:'yakiniku',e:'🍖'},
+  {k:'牛カルビ',ka:'ぎゅうカルビ',r:'gyū karubi',ko:'소 갈비',n:'',c:'yakiniku',e:'🥩'},
+  // ===== 🥟 중화요리 =====
+  {k:'麻婆豆腐',ka:'マーボーどうふ',r:'mābō dōfu',ko:'마파두부',n:'',c:'chinese',e:'🌶️'},
+  {k:'青椒肉絲',ka:'チンジャオロース',r:'chinjao rōsu',ko:'칭자오로스(고추잡채)',n:'',c:'chinese',e:'🥢'},
+  {k:'回鍋肉',ka:'ホイコーロー',r:'hoikōrō',ko:'회과육(돼지양배추볶음)',n:'',c:'chinese',e:'🥢'},
+  {k:'八宝菜',ka:'はっぽうさい',r:'happōsai',ko:'팔보채',n:'',c:'chinese',e:'🥢'},
+  {k:'春巻き',ka:'はるまき',r:'harumaki',ko:'춘권(스프링롤)',n:'',c:'chinese',e:'🥟'},
+  {k:'シュウマイ',ka:'シュウマイ',r:'shūmai',ko:'슈마이',n:'',c:'chinese',e:'🥟'},
+  {k:'エビチリ',ka:'エビチリ',r:'ebi chiri',ko:'칠리새우',n:'',c:'chinese',e:'🍤'},
+  {k:'酢豚',ka:'すぶた',r:'subuta',ko:'탕수육',n:'',c:'chinese',e:'🍖'},
+  // ===== 🍝 양식·패밀리레스토랑 =====
+  {k:'ナポリタン',ka:'ナポリタン',r:'naporitan',ko:'나폴리탄(케첩 스파게티)',n:'일본식 양식',c:'western',e:'🍝'},
+  {k:'カルボナーラ',ka:'カルボナーラ',r:'karubonāra',ko:'까르보나라',n:'',c:'western',e:'🍝'},
+  {k:'ペペロンチーノ',ka:'ペペロンチーノ',r:'peperonchīno',ko:'페페론치노',n:'',c:'western',e:'🍝'},
+  {k:'ミートソース',ka:'ミートソース',r:'mīto sōsu',ko:'미트소스 스파게티',n:'',c:'western',e:'🍝'},
+  {k:'ドリア',ka:'ドリア',r:'doria',ko:'도리아(밥 그라탕)',n:'',c:'western',e:'🧀'},
+  {k:'グラタン',ka:'グラタン',r:'guratan',ko:'그라탕',n:'',c:'western',e:'🧀'},
+  {k:'ピザ',ka:'ピザ',r:'piza',ko:'피자',n:'',c:'western',e:'🍕'},
+  {k:'ハンバーガー',ka:'ハンバーガー',r:'hanbāgā',ko:'햄버거',n:'',c:'western',e:'🍔'},
+  {k:'エビフライ',ka:'エビフライ',r:'ebi furai',ko:'새우튀김',n:'',c:'western',e:'🍤'},
+  {k:'ハヤシライス',ka:'ハヤシライス',r:'hayashi raisu',ko:'하야시라이스',n:'데미글라스 소고기덮밥',c:'western',e:'🍛'},
+  {k:'ローストビーフ',ka:'ローストビーフ',r:'rōsuto bīfu',ko:'로스트비프',n:'',c:'western',e:'🥩'},
+  // ===== 🍚 일식 반찬·튀김 추가 =====
+  {k:'卵かけご飯',ka:'たまごかけごはん',r:'tamago kake gohan',ko:'계란 비빔밥(TKG)',n:'날계란+간장',c:'side',e:'🥚'},
+  {k:'煮物',ka:'にもの',r:'nimono',ko:'조림(니모노)',n:'',c:'side',e:'🍲'},
+  {k:'きんぴらごぼう',ka:'きんぴらごぼう',r:'kinpira gobō',ko:'우엉볶음',n:'',c:'side',e:'🥢'},
+  {k:'ひじき',ka:'ひじき',r:'hijiki',ko:'톳 조림',n:'',c:'side',e:'🥢'},
+  {k:'酢の物',ka:'すのもの',r:'sunomono',ko:'초무침',n:'',c:'side',e:'🥗'},
+  {k:'干物',ka:'ひもの',r:'himono',ko:'생선 건어물구이',n:'',c:'side',e:'🐟'},
+  {k:'天ぷら盛り合わせ',ka:'てんぷらもりあわせ',r:'tenpura moriawase',ko:'모듬 튀김',n:'',c:'side',e:'🍤'},
+  {k:'海老天',ka:'えびてん',r:'ebi ten',ko:'새우튀김',n:'',c:'side',e:'🍤'},
+  {k:'かき揚げ',ka:'かきあげ',r:'kakiage',ko:'가키아게(채소모듬튀김)',n:'',c:'side',e:'🍤'},
+  {k:'味噌田楽',ka:'みそでんがく',r:'miso dengaku',ko:'된장 꼬치구이',n:'',c:'side',e:'🍢'},
+  // ===== 🍡 디저트 추가 =====
+  {k:'パンケーキ',ka:'パンケーキ',r:'pankēki',ko:'팬케이크',n:'',c:'sweet',e:'🥞'},
+  {k:'ワッフル',ka:'ワッフル',r:'waffuru',ko:'와플',n:'',c:'sweet',e:'🧇'},
+  {k:'ティラミス',ka:'ティラミス',r:'tiramisu',ko:'티라미수',n:'',c:'sweet',e:'🍰'},
+  {k:'モンブラン',ka:'モンブラン',r:'monburan',ko:'몽블랑',n:'밤 케이크',c:'sweet',e:'🌰'},
+  {k:'ケーキ',ka:'ケーキ',r:'kēki',ko:'케이크',n:'',c:'sweet',e:'🍰'},
+  {k:'ぜんざい',ka:'ぜんざい',r:'zenzai',ko:'젠자이(단팥죽)',n:'',c:'sweet',e:'🥣'},
+  {k:'あんみつ',ka:'あんみつ',r:'anmitsu',ko:'안미츠',n:'한천+팥+과일',c:'sweet',e:'🍧'},
+  {k:'大福',ka:'だいふく',r:'daifuku',ko:'다이후쿠(찹쌀떡)',n:'いちご大福=딸기',c:'sweet',e:'🍡'},
+  {k:'わらび餅',ka:'わらびもち',r:'warabi mochi',ko:'와라비모치',n:'콩가루 떡',c:'sweet',e:'🍡'},
+  {k:'みたらし団子',ka:'みたらしだんご',r:'mitarashi dango',ko:'미타라시 당고',n:'간장시럽 경단',c:'sweet',e:'🍡'},
+  {k:'メロンパン',ka:'メロンパン',r:'meron pan',ko:'멜론빵',n:'',c:'sweet',e:'🍈'},
+  {k:'カレーパン',ka:'カレーパン',r:'karē pan',ko:'카레빵',n:'튀긴 빵',c:'sweet',e:'🍞'},
+  // ===== 🍺 음료 추가 =====
+  {k:'ほうじ茶',ka:'ほうじちゃ',r:'hōjicha',ko:'호지차(볶은 녹차)',n:'',c:'drink',e:'🍵'},
+  {k:'カフェラテ',ka:'カフェラテ',r:'kafe rate',ko:'카페라떼',n:'',c:'drink',e:'☕'},
+  {k:'カプチーノ',ka:'カプチーノ',r:'kapuchīno',ko:'카푸치노',n:'',c:'drink',e:'☕'},
+  {k:'タピオカ',ka:'タピオカ',r:'tapioka',ko:'버블티(타피오카)',n:'タピオカミルクティー',c:'drink',e:'🧋'},
+  {k:'スムージー',ka:'スムージー',r:'sumūjī',ko:'스무디',n:'',c:'drink',e:'🥤'},
+  {k:'コーラ',ka:'コーラ',r:'kōra',ko:'콜라',n:'',c:'drink',e:'🥤'},
+  {k:'サイダー',ka:'サイダー',r:'saidā',ko:'사이다(탄산음료)',n:'',c:'drink',e:'🥤'},
+  {k:'カルピス',ka:'カルピス',r:'karupisu',ko:'칼피스(유산균 음료)',n:'',c:'drink',e:'🥛'},
+  {k:'メロンソーダ',ka:'メロンソーダ',r:'meron sōda',ko:'멜론소다',n:'クリームソーダ=+아이스크림',c:'drink',e:'🥤'},
+  {k:'牛乳',ka:'ぎゅうにゅう',r:'gyūnyū',ko:'우유',n:'',c:'drink',e:'🥛'},
+  // ===== 🌶️ 조미료·소스 추가 =====
+  {k:'ポン酢',ka:'ポンず',r:'ponzu',ko:'폰즈(감귤간장)',n:'나베·튀김에',c:'opt',e:'🍶'},
+  {k:'ソース',ka:'ソース',r:'sōsu',ko:'소스(돈카츠소스)',n:'',c:'opt',e:'🍶'},
+  {k:'マヨネーズ',ka:'マヨネーズ',r:'mayonēzu',ko:'마요네즈',n:'',c:'opt',e:'🥚'},
+  {k:'ラー油',ka:'ラーゆ',r:'rāyu',ko:'고추기름(라유)',n:'교자·중화',c:'opt',e:'🌶️'},
+  {k:'めんつゆ',ka:'めんつゆ',r:'mentsuyu',ko:'면 쯔유(간장육수)',n:'소바·우동 찍는 장',c:'opt',e:'🍶'}
 ];
 const CATS=[
   ['all','전체 메뉴'],['fukuoka','⭐후쿠오카 메뉴'],['region','🗾전국명물 메뉴'],['noodle','🍜라멘·면 메뉴'],
-  ['don','🍱덮밥 메뉴'],['meat','🍖고기·튀김 메뉴'],['seafood','🍣스시·해산물 메뉴'],['izakaya','🍢이자카야 메뉴'],
+  ['don','🍱덮밥·정식 메뉴'],['meat','🍖고기·튀김 메뉴'],['yakiniku','🥩야키니쿠 메뉴'],['seafood','🍣스시·해산물 메뉴'],
+  ['izakaya','🍢이자카야 메뉴'],['chinese','🥟중화 메뉴'],['western','🍝양식 메뉴'],
   ['side','🍚밥·사이드 메뉴'],['sweet','🍡디저트 메뉴'],['drink','🍺음료 메뉴'],['opt','🌶️조미료·옵션']
 ];
-const CAT_EMOJI={fukuoka:'🍜',region:'🗾',noodle:'🍜',don:'🍱',meat:'🍖',seafood:'🐟',izakaya:'🍢',side:'🍚',sweet:'🍡',drink:'🍺',opt:'📋'};
+const CAT_EMOJI={fukuoka:'🍜',region:'🗾',noodle:'🍜',don:'🍱',meat:'🍖',yakiniku:'🥩',seafood:'🐟',izakaya:'🍢',chinese:'🥟',western:'🍝',side:'🍚',sweet:'🍡',drink:'🍺',opt:'📋'};
 /* 자유 라이선스(CC) 사진 키워드 — loremflickr 태그. 없으면 아이콘 표시, 안 뜨면 자동 아이콘 대체 */
 const IMG_KW={
   '豚骨ラーメン':'tonkotsu,ramen','博多ラーメン':'hakata,ramen','もつ鍋':'motsunabe','水炊き':'mizutaki','明太子':'mentaiko','屋台':'yatai,fukuoka','焼き鳥':'yakitori','胡麻鯖':'mackerel,sashimi','鉄鍋餃子':'gyoza','うどん':'udon',
@@ -532,6 +633,18 @@ Object.assign(IMG_KW,{
   '軟骨唐揚げ':'karaage','馬刺し':'basashi','たこわさ':'octopus','焼きおにぎり':'onigiri','焼きナス':'eggplant','あさりの酒蒸し':'clams','アジフライ':'fried,fish','イカ焼き':'squid','牛すじ煮込み':'beef,stew','明太子卵焼き':'tamagoyaki','おでん':'oden','冷やしトマト':'tomato','キムチ':'kimchi','シーザーサラダ':'caesar,salad',
   '焼きラーメン':'yakisoba','豚バラ串':'pork,skewer','一口餃子':'gyoza','ごぼう天うどん':'udon','丸天うどん':'udon','かしわめし':'chicken,rice','がめ煮':'nimono','おきゅうと':'japanese,food',
   '芋焼酎':'shochu','麦焼酎':'shochu','ウーロンハイ':'cocktail','角ハイボール':'highball'
+});
+Object.assign(IMG_KW,{
+  'チャーシュー':'chashu','味玉':'ramen,egg','メンマ':'menma','海苔':'nori,seaweed','もやし':'beansprouts','背脂':'ramen',
+  'かけうどん':'udon','きつねうどん':'kitsune,udon','たぬきうどん':'udon','肉うどん':'udon','カレーうどん':'curry,udon','釜玉うどん':'udon','ざるそば':'zaru,soba','天ぷらそば':'soba','月見そば':'soba','素麺':'somen',
+  'とんかつ定食':'tonkatsu','焼き魚定食':'grilled,fish','刺身定食':'sashimi','生姜焼き定食':'pork','唐揚げ定食':'karaage','ハンバーグ定食':'hamburg,steak','カツカレー':'katsu,curry','キーマカレー':'keema,curry','中華丼':'chinese,rice','天津飯':'tenshinhan',
+  'カルビ':'galbi,beef','上カルビ':'galbi','ロース':'beef','ハラミ':'beef','タン':'beef,tongue','ホルモン':'horumon','ミノ':'beef','牛カルビ':'galbi',
+  '麻婆豆腐':'mapo,tofu','青椒肉絲':'chinese,food','回鍋肉':'chinese,food','八宝菜':'chinese,food','春巻き':'spring,roll','シュウマイ':'shumai','エビチリ':'chili,shrimp','酢豚':'sweetsour,pork',
+  'ナポリタン':'napolitan,pasta','カルボナーラ':'carbonara','ペペロンチーノ':'pasta','ミートソース':'spaghetti','ドリア':'doria','グラタン':'gratin','ピザ':'pizza','ハンバーガー':'hamburger','エビフライ':'fried,shrimp','ハヤシライス':'hayashi,rice','ローストビーフ':'roast,beef',
+  '卵かけご飯':'tamago,rice','煮物':'nimono','きんぴらごぼう':'kinpira','ひじき':'hijiki','酢の物':'sunomono','干物':'dried,fish','天ぷら盛り合わせ':'tempura','海老天':'tempura,shrimp','かき揚げ':'kakiage','味噌田楽':'dengaku',
+  'パンケーキ':'pancake','ワッフル':'waffle','ティラミス':'tiramisu','モンブラン':'montblanc','ケーキ':'cake','ぜんざい':'zenzai','あんみつ':'anmitsu','大福':'daifuku','わらび餅':'warabimochi','みたらし団子':'dango','メロンパン':'melonpan','カレーパン':'curry,bread',
+  'ほうじ茶':'hojicha','カフェラテ':'latte','カプチーノ':'cappuccino','タピオカ':'bubble,tea','スムージー':'smoothie','コーラ':'cola','サイダー':'soda','カルピス':'calpis','メロンソーダ':'melon,soda','牛乳':'milk',
+  'ポン酢':'ponzu','ソース':'sauce','マヨネーズ':'mayonnaise','ラー油':'chili,oil','めんつゆ':'tsuyu'
 });
 let curCat='all';
 function renderCats(){
