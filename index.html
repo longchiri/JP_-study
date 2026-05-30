@@ -56,7 +56,9 @@
 
   .card{background:var(--card); border:1px solid var(--line); border-radius:15px; padding:11px 13px; margin-bottom:9px; cursor:pointer; transition:.15s; display:flex; align-items:center; gap:11px;}
   .card:active{transform:scale(.985); background:var(--card2);}
-  .card .thumb{flex:0 0 auto; width:52px; height:52px; border-radius:12px; background:linear-gradient(145deg,var(--bg2),var(--card2)); border:1px solid var(--line); display:grid; place-items:center; font-size:30px; line-height:1;}
+  .card .thumb{flex:0 0 auto; width:52px; height:52px; border-radius:12px; background:linear-gradient(145deg,var(--bg2),var(--card2)); border:1px solid var(--line); display:grid; place-items:center; font-size:30px; line-height:1; overflow:hidden; position:relative;}
+  .card .thumb img{width:100%; height:100%; object-fit:cover; display:block;}
+  .card .thumb .emo{position:absolute; inset:0; display:grid; place-items:center;}
   .card .jp{flex:0 0 auto; min-width:74px;}
   .card .jp .kanji{font-size:23px; font-weight:700; line-height:1.15;}
   .card .jp .kana{font-size:12.5px; color:var(--accent2); margin-top:1px;}
@@ -441,6 +443,19 @@ const CATS=[
   ['side','🍚밥·사이드'],['sweet','🍡디저트'],['drink','🍺음료'],['opt','🌶️옵션·조미료']
 ];
 const CAT_EMOJI={fukuoka:'🍜',region:'🗾',noodle:'🍜',don:'🍱',meat:'🍖',seafood:'🐟',izakaya:'🍢',side:'🍚',sweet:'🍡',drink:'🍺',opt:'📋'};
+/* 자유 라이선스(CC) 사진 키워드 — loremflickr 태그. 없으면 아이콘 표시, 안 뜨면 자동 아이콘 대체 */
+const IMG_KW={
+  '豚骨ラーメン':'tonkotsu,ramen','博多ラーメン':'hakata,ramen','もつ鍋':'motsunabe','水炊き':'mizutaki','明太子':'mentaiko','屋台':'yatai,fukuoka','焼き鳥':'yakitori','胡麻鯖':'mackerel,sashimi','鉄鍋餃子':'gyoza','うどん':'udon',
+  'ラーメン':'ramen','つけ麺':'tsukemen','蕎麦':'soba','焼きそば':'yakisoba','冷やし中華':'hiyashi,chuka','担々麺':'tantanmen','油そば':'aburasoba','皿うどん':'champon',
+  '豚カツ':'tonkatsu','唐揚げ':'karaage','天ぷら':'tempura','餃子':'gyoza','ハンバーグ':'hamburg,steak','焼肉':'yakiniku','ステーキ':'steak','生姜焼き':'shogayaki','コロッケ':'korokke','メンチカツ':'menchikatsu',
+  '寿司':'sushi','刺身':'sashimi','海老':'shrimp','蟹':'crab','鰻':'unagi','鮪':'tuna,sushi','鮭':'salmon','烏賊':'squid','蛸':'octopus','雲丹':'uni,sushi','いくら':'ikura','帆立':'scallop','穴子':'anago','鰤':'yellowtail','鯛':'seabream','鯖':'mackerel',
+  'お好み焼き':'okonomiyaki','たこ焼き':'takoyaki','味噌ラーメン':'miso,ramen','醤油ラーメン':'shoyu,ramen','塩ラーメン':'ramen','ちゃんぽん':'champon','味噌カツ':'misokatsu','手羽先':'tebasaki','ひつまぶし':'hitsumabushi','牛タン':'gyutan','沖縄そば':'okinawa,soba','讃岐うどん':'udon','もんじゃ焼き':'monjayaki','すき焼き':'sukiyaki','しゃぶしゃぶ':'shabushabu',
+  '牛丼':'gyudon','カツ丼':'katsudon','親子丼':'oyakodon','天丼':'tendon','海鮮丼':'kaisendon','うな丼':'unadon','鉄火丼':'tekkadon','オムライス':'omurice','チャーハン':'friedrice','カレーライス':'japanese,curry',
+  '枝豆':'edamame','出汁巻き卵':'tamagoyaki','揚げ出し豆腐':'agedashi,tofu','冷奴':'tofu','串カツ':'kushikatsu','もつ煮':'motsuni','刺身盛り合わせ':'sashimi','焼き魚':'grilled,fish','ポテトフライ':'fries','砂肝':'yakitori',
+  'たい焼き':'taiyaki','どら焼き':'dorayaki','団子':'dango','餅':'mochi','かき氷':'kakigori','ソフトクリーム':'softcream','パフェ':'parfait','クレープ':'crepe','プリン':'purin,pudding','和菓子':'wagashi','抹茶':'matcha',
+  'カレー':'curry','味噌汁':'misosoup','漬物':'tsukemono','サラダ':'salad','おにぎり':'onigiri','弁当':'bento','茶碗蒸し':'chawanmushi','納豆':'natto',
+  'お茶':'greentea','生ビール':'beer','焼酎':'shochu','日本酒':'sake','ハイボール':'highball','珈琲':'coffee','烏龍茶':'tea','緑茶':'greentea','梅酒':'umeshu','レモンサワー':'cocktail','抹茶ラテ':'matcha,latte'
+};
 let curCat='all';
 function renderCats(){
   const b=document.getElementById('catBar'); b.innerHTML='';
@@ -459,7 +474,11 @@ function renderWords(){
   list.forEach(w=>{
     const c=document.createElement('div'); c.className='card';
     const emo=w.e||CAT_EMOJI[w.c]||'🍽️';
-    c.innerHTML=`<div class="thumb">${emo}</div>
+    const kw=IMG_KW[w.k];
+    const thumb=kw
+      ? `<div class="thumb"><span class="emo">${emo}</span><img loading="lazy" src="https://loremflickr.com/200/200/${kw}" alt="" onload="this.previousElementSibling.style.display='none'" onerror="this.remove()"></div>`
+      : `<div class="thumb"><span class="emo">${emo}</span></div>`;
+    c.innerHTML=`${thumb}
       <div class="jp"><div class="kanji">${w.k}</div><div class="kana">${w.ka}</div></div>
       <div class="info"><div class="romaji">${w.r}</div><div class="ko">${w.ko}</div>${w.n?`<div class="note">${w.n}</div>`:''}</div>
       <div class="spk">🔊</div>`;
