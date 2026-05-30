@@ -14,35 +14,6 @@
 
 ---
 
-## 📲 GitHub에 올려서 매일 보기 (GitHub Pages)
-
-### 방법 A — 웹사이트에서 드래그&드롭 (가장 쉬움, PC 권장)
-
-1. https://github.com 로그인 → 우측 상단 **+** → **New repository**
-2. Repository name에 `fukuoka-nihongo` 입력 → **Public** 선택 → **Create repository**
-3. 새로 생긴 페이지에서 **uploading an existing file** 링크 클릭
-4. 이 폴더 안의 `index.html` 과 `README.md` 를 끌어다 놓기 → **Commit changes**
-5. 상단 **Settings** → 왼쪽 **Pages** 메뉴
-6. Source를 **Deploy from a branch**, Branch를 **main / (root)** 으로 설정 → **Save**
-7. 1~2분 뒤 같은 페이지에 뜨는 주소(`https://아이디.github.io/fukuoka-nihongo/`)를 휴대폰에 즐겨찾기/홈화면 추가
-
-### 방법 B — git 명령어 (터미널)
-
-```bash
-cd fukuoka-nihongo          # 이 폴더로 이동
-git init
-git add .
-git commit -m "후쿠오카 일본어 앱"
-git branch -M main
-# 아래 URL은 본인 저장소 주소로 바꿔주세요
-git remote add origin https://github.com/<아이디>/fukuoka-nihongo.git
-git push -u origin main
-```
-
-이후 GitHub 저장소 **Settings → Pages** 에서 Branch를 `main / (root)` 으로 지정하면 공개됩니다.
-
----
-
 ## 📱 홈 화면에 앱처럼 추가
 
 - **아이폰(사파리):** 공개된 주소 접속 → 공유 버튼 → "홈 화면에 추가"
